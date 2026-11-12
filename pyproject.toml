@@ -1,0 +1,16 @@
+[project]
+name = "hatod-aklan"
+version = "1.0.0"
+description = "Hatod Akean - Aklanon's Famous Cuisine, a full-stack food ordering demo with an EIP event bus."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "uvicorn[standard]>=0.32,<1",
+    "jinja2>=3.1,<4",
+    "python-multipart>=0.0.20,<1",
+    "itsdangerous>=2.2,<3",
+]
+
+[tool.uv]
+package = false

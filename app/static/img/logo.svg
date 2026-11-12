@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Hatod Akean Ati-Atihan cultural emblem">
+  <defs>
+    <linearGradient id="warm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F7D794"/>
+      <stop offset="0.52" stop-color="#FBA17E"/>
+      <stop offset="1" stop-color="#FF9A00"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="42%" cy="35%" r="72%">
+      <stop offset="0" stop-color="#FFF9EE"/>
+      <stop offset="1" stop-color="#F7D794"/>
+    </radialGradient>
+  </defs>
+  <circle cx="64" cy="64" r="61" fill="#580F28"/>
+  <circle cx="64" cy="64" r="55.5" fill="none" stroke="url(#warm)" stroke-width="2" stroke-dasharray="2.5 6.5" stroke-linecap="round"/>
+  <g fill="url(#warm)">
+    <path d="M64 6.5c4.7 0 8.3 7.6 8.3 18.2 0 5.4-1.2 10.1-3.2 13.2h-10.2c-2-3.1-3.2-7.8-3.2-13.2C55.7 14.1 59.3 6.5 64 6.5Z" opacity=".95"/>
+    <path d="M22.3 22.8c4.6-1 8.6 3.7 10.6 10.8 1.2 4.5 1 8.6-.1 11.6l-7.5 4.2c-2.7-2.5-5.1-6.5-6.3-11-2-7.1-.9-14.2 3.3-15.6Z" opacity=".8"/>
+    <path d="M105.7 22.8c-4.6-1-8.6 3.7-10.6 10.8-1.2 4.5-1 8.6.1 11.6l7.5 4.2c2.7-2.5 5.1-6.5 6.3-11 2-7.1.9-14.2-3.3-15.6Z" opacity=".8"/>
+  </g>
+  <circle cx="64" cy="64" r="36.5" fill="#580F28" stroke="url(#warm)" stroke-width="2"/>
+  <circle cx="64" cy="64" r="30" fill="url(#sun)"/>
+  <g fill="#580F28">
+    <path d="M44 53.5c2.7-5.8 8.6-9.5 15.2-9.5h9.6c6.6 0 12.5 3.7 15.2 9.5-3.7-1.5-7.8-2.3-12.1-2.3H56.1c-4.3 0-8.4.8-12.1 2.3Z"/>
+    <ellipse cx="55" cy="65" rx="3.6" ry="4.4"/>
+    <ellipse cx="73" cy="65" rx="3.6" ry="4.4"/>
+    <path d="M53.2 75.2c2.8 4.3 6.5 6.5 10.8 6.5s8-2.2 10.8-6.5c-3.1 1.7-6.7 2.6-10.8 2.6s-7.7-.9-10.8-2.6Z"/>
+  </g>
+  <g fill="#EE6200">
+    <circle cx="46" cy="72.5" r="2.1"/>
+    <circle cx="82" cy="72.5" r="2.1"/>
+  </g>
+  <g fill="none" stroke="#EE6200" stroke-width="2" stroke-linecap="round">
+    <path d="M42 87.8c11.4 6.7 32.6 6.7 44 0"/>
+    <path d="M47 92.2c8.5 4.3 25.5 4.3 34 0" opacity=".55"/>
+  </g>
+  <circle cx="64" cy="64" r="50" fill="none" stroke="#F7D794" stroke-width="1" opacity=".45"/>
+</svg>

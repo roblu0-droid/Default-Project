@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Order authentic Aklanon cuisine from Hatod Akean — Kalibo, Numancia, Banga, Ibajay, and Malay.">
+  <meta name="theme-color" content="#580F28">
+  <title>Hatod Akean — Order Aklanon cuisine</title>
+  <link rel="icon" href="{{ url_for('static', path='img/logo.svg') }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            burgundy: '#580F28',
+            mango: '#FF9A00',
+            ember: '#EE6200',
+            peach: '#FBA17E',
+            sand: '#F7D794',
+            cream: '#FFF9F0'
+          },
+          fontFamily: {
+            display: ['Fredoka', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/app.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/checkout.css') }}">
+</head>
+<body class="app-body" data-page="app">
+  <div class="page-texture" aria-hidden="true"></div>
+
+  <header class="app-header" id="appHeader">
+    <a class="brand brand-app" href="#discover" aria-label="Hatod Akean dashboard">
+      <img class="brand-mark" src="{{ url_for('static', path='img/logo.svg') }}" alt="Hatod Akean emblem">
+      <span class="brand-copy">
+        <strong>HATOD AKEAN</strong>
+        <em>Aklanon's Famous Cuisine</em>
+      </span>
+    </a>
+
+    <nav class="app-nav" aria-label="Main navigation">
+      <a class="app-nav-link is-active" href="#discover" data-section-link="discover">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+        <span>Discover</span>
+      </a>
+      <a class="app-nav-link" href="#menu" data-section-link="menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h10"/><circle cx="18" cy="19" r="2"/></svg>
+        <span>Menu</span>
+      </a>
+      <a class="app-nav-link" href="#orders" data-section-link="orders">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14l1 16H4L5 4Z"/><path d="M9 8h6M9 12h6"/></svg>
+        <span>My orders</span>
+      </a>
+      <a class="app-nav-link" href="#culture" data-section-link="culture">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3V9Z"/></svg>
+        <span>Culture</span>
+      </a>
+      <a class="app-nav-link" href="#integration" data-section-link="integration">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6.5 7.5 11 16M17.5 7.5 13 16"/></svg>
+        <span>Integration</span>
+      </a>
+    </nav>
+
+    <div class="app-header-actions">
+      <div class="delivery-chip">
+        <span class="delivery-pulse"></span>
+        <span>Delivering to <strong id="headerMunicipality">{{ user.municipality }}</strong></span>
+      </div>
+      <button class="icon-button cart-button" id="cartButton" type="button" aria-label="Open cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h2l2.2 10.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 8H7"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+        <span class="cart-count" id="cartCount" hidden>0</span>
+      </button>
+      <div class="user-wrap">
+        <button class="user-button" id="userButton" type="button" aria-expanded="false" aria-controls="userMenu">
+          <span class="user-avatar">{{ user.full_name[:1] | upper }}</span>
+          <span class="user-name">{{ user.full_name.split()[0] }}</span>
+          <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+        </button>
+        <div class="user-menu" id="userMenu" hidden>
+          <div class="user-menu-head">
+            <span class="user-avatar large">{{ user.full_name[:1] | upper }}</span>
+            <div><strong>{{ user.full_name }}</strong><span>{{ user.email }}</span></div>
+          </div>
+          <button type="button" class="user-menu-item" id="profileButton">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+            Change municipality
+          </button>
+          <button type="button" class="user-menu-item" id="logoutButton">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9"/></svg>
+            Sign out
+          </button>
+        </div>
+      </div>
+      <button class="icon-button mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Open navigation" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobileNav" hidden>
+    <a href="#discover" data-mobile-link>Discover</a>
+    <a href="#menu" data-mobile-link>Menu</a>
+    <a href="#orders" data-mobile-link>My orders</a>
+    <a href="#culture" data-mobile-link>Culture</a>
+    <a href="#integration" data-mobile-link>Integration</a>
+    <button type="button" id="mobileLogoutButton">Sign out</button>
+  </div>
+
+  <main class="app-main">
+    <section class="app-section discover-section" id="discover">
+      <div class="discover-hero">
+        <div class="discover-hero-glow glow-a" aria-hidden="true"></div>
+        <div class="discover-hero-glow glow-b" aria-hidden="true"></div>
+        <div class="discover-copy">
+          <div class="eyebrow light"><span class="eyebrow-dot"></span>Maayong pag-abot, {{ user.full_name.split()[0] }}!</div>
+          <h1>Aklan's <span>famous flavors</span>,<br>hatod sa inyo.</h1>
+          <p>Heirloom recipes from Kalibo and beyond — cooked by local partners, packed with care, and delivered to your door.</p>
+          <form class="hero-search" id="heroSearchForm" role="search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+            <input type="search" id="heroSearchInput" placeholder="Search binakoe, latik, tuba…" autocomplete="off">
+            <button type="submit">Find a dish</button>
+          </form>
+          <div class="hero-quick-actions">
+            <button type="button" class="hero-chip" data-category-jump="Main Dishes"><span>🍲</span> Main dishes</button>
+            <button type="button" class="hero-chip" data-category-jump="Native Delicacies"><span>🍡</span> Kakanin</button>
+            <button type="button" class="hero-chip" data-category-jump="Beverages"><span>🥥</span> Local drinks</button>
+            <button type="button" class="hero-chip hero-chip-live" id="heroTraceButton"><span class="live-dot"></span> Live EIP trail</button>
+          </div>
+        </div>
+
+        <div class="discover-art" aria-hidden="true">
+          <figure class="hero-photo hero-photo-main">
+            <img src="{{ url_for('static', path='img/ati-atihan-woman.jpg') }}" alt="">
+          </figure>
+          <figure class="hero-photo hero-photo-food">
+            <img src="{{ url_for('static', path='img/binakoe.jpg') }}" alt="">
+          </figure>
+          <div class="hero-mini-card">
+            <span class="mini-card-icon">✦</span>
+            <div><strong>House favorite</strong><span>Binakoe nga Manok</span></div>
+            <span class="mini-price">₱320</span>
+          </div>
+          <div class="hero-festival-badge">
+            <span>HALA</span><strong>BIRA!</strong>
+          </div>
+          <div class="hero-art-stamp">KALIBO · AKLAN</div>
+        </div>
+
+        <div class="hero-stats">
+          <div><strong>13</strong><span>heirloom dishes</span></div>
+          <div><strong>5</strong><span>Aklan municipalities</span></div>
+          <div><strong>3</strong><span>local partner hubs</span></div>
+          <div class="stat-live"><strong><span class="live-dot"></span>Live</strong><span>event bus online</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="app-section menu-section" id="menu">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">The Aklanon table</span>
+          <h2>Taste the <em>heritage</em>.</h2>
+          <p>Every dish is rooted in Aklan — from bamboo-fire Binakoe to market-day kakanin.</p>
+        </div>
+        <div class="section-heading-meta">
+          <span class="meta-pill"><span class="meta-dot"></span><span id="menuResultCount">Loading dishes…</span></span>
+        </div>
+      </div>
+
+      <div class="menu-toolbar">
+        <div class="category-tabs" id="categoryTabs" role="tablist" aria-label="Menu categories">
+          <button type="button" class="category-tab is-active" data-category="All">All</button>
+          {% for category in categories %}
+          <button type="button" class="category-tab" data-category="{{ category }}">{{ category }}</button>
+          {% endfor %}
+        </div>
+        <div class="menu-filters">
+          <label class="search-field">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+            <input type="search" id="menuSearch" placeholder="Search the menu" aria-label="Search the menu" autocomplete="off">
+          </label>
+          <label class="select-field">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+            <select id="municipalityFilter" aria-label="Filter dishes by municipality">
+              <option value="All">All municipalities</option>
+              {% for municipality in municipalities %}
+              <option value="{{ municipality }}">{{ municipality }}</option>
+              {% endfor %}
+            </select>
+            <svg class="select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+          </label>
+        </div>
+      </div>
+
+      <div class="menu-grid" id="menuGrid" aria-live="polite">
+        {% for i in range(6) %}
+        <div class="menu-skeleton">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line medium"></div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="menu-empty" id="menuEmpty" hidden>
+        <span class="empty-icon">🍽️</span>
+        <h3>No dishes found</h3>
+        <p>Try another category or search for something else.</p>
+        <button type="button" class="text-button" id="clearFiltersButton">Clear filters</button>
+      </div>
+    </section>
+
+    <section class="app-section orders-section" id="orders">
+      <div class="section-heading compact">
+        <div>
+          <span class="section-kicker">From kitchen to doorstep</span>
+          <h2>Your <em>hatod</em> history.</h2>
+          <p>Track every order and open its live integration trail.</p>
+        </div>
+        <button type="button" class="outline-button" id="refreshOrdersButton">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 6.4"/><path d="M20 4v7h-7"/></svg>
+          Refresh
+        </button>
+      </div>
+      <div class="orders-list" id="ordersList" aria-live="polite">
+        <div class="order-loading"><span class="spinner"></span>Loading your orders…</div>
+      </div>
+    </section>
+
+    <section class="app-section culture-section" id="culture">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">Beyond the plate</span>
+          <h2>Culture on <em>screen</em>.</h2>
+          <p>Three windows into the sights, sounds, and slow-cooked soul of Aklan.</p>
+        </div>
+        <span class="culture-note">Curated with local love <span>✦</span></span>
+      </div>
+
+      <div class="video-grid">
+        {% for video in videos %}
+        <article class="video-card" data-video-id="{{ video.youtube_id }}" data-video-title="{{ video.title }}">
+          <div class="video-thumb-wrap">
+            <img src="{{ video.thumbnail }}" alt="{{ video.title }}" loading="lazy">
+            <span class="video-shade"></span>
+            <button class="play-button" type="button" aria-label="Play {{ video.title }}">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 7 8 5-8 5V7Z"/></svg>
+            </button>
+            <span class="video-tag">{{ video.eyebrow }}</span>
+          </div>
+          <div class="video-card-copy">
+            <h3>{{ video.title }}</h3>
+            <p>{{ video.description }}</p>
+            <span class="watch-label">Watch the story <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="app-section integration-section" id="integration">
+      <div class="integration-intro">
+        <div class="section-heading light-heading">
+          <div>
+            <span class="section-kicker">System Integration & Architecture</span>
+            <h2>One order. <em>Four patterns.</em> Live.</h2>
+            <p>Every checkout travels through a real asynchronous event bus. Watch the middleware route, translate, and filter messages as your food is prepared.</p>
+          </div>
+        </div>
+        <div class="integration-live-summary">
+          <span class="live-badge large"><span></span>Event bus online</span>
+          <div class="integration-summary-stats">
+            <div><strong id="logCount">0</strong><span>events captured</span></div>
+            <div><strong id="channelCount">4</strong><span>active channels</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pattern-grid">
+        <article class="pattern-card">
+          <span class="pattern-number">01</span>
+          <div class="pattern-icon channel-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="18" cy="17" r="2"/></svg>
+          </div>
+          <h3>Message Channel</h3>
+          <p>Queue order events asynchronously so kitchen and rider systems never block checkout.</p>
+          <code>channel.orders.inbound</code>
+        </article>
+        <article class="pattern-card">
+          <span class="pattern-number">02</span>
+          <div class="pattern-icon router-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 12h4l6-6M11 12l6 6"/></svg>
+          </div>
+          <h3>Content-Based Router</h3>
+          <p>Reads municipality and dominant item category to choose the right local kitchen hub.</p>
+          <code>municipality + category</code>
+        </article>
+        <article class="pattern-card">
+          <span class="pattern-number">03</span>
+          <div class="pattern-icon translate-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h8M8 4v3M6 7c.7 3 2.7 5 6 6"/><path d="m13 20 3.5-8 3.5 8M14.5 17h4"/></svg>
+          </div>
+          <h3>Message Translator</h3>
+          <p>Transforms one checkout payload into a kitchen prep ticket and a rider logistics ticket.</p>
+          <code>JSON → prep + logistics</code>
+        </article>
+        <article class="pattern-card">
+          <span class="pattern-number">04</span>
+          <div class="pattern-icon filter-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6 7v6l-4 2v-8L4 5Z"/></svg>
+          </div>
+          <h3>Message Filter</h3>
+          <p>Checks stock and Aklan delivery zones. Invalid requests are sent to the dead-letter queue.</p>
+          <code>channel.deadletter</code>
+        </article>
+      </div>
+
+      <div class="event-console">
+        <div class="console-header">
+          <div class="console-title">
+            <span class="console-lights"><i></i><i></i><i></i></span>
+            <div><strong>Live integration trace</strong><span id="streamStatus">Connecting to event stream…</span></div>
+          </div>
+          <div class="console-actions">
+            <span class="stream-pill" id="streamPill"><span></span>SSE</span>
+            <button type="button" class="console-button" id="demoFilterButton">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18"/></svg>
+              Simulate dead letter
+            </button>
+          </div>
+        </div>
+
+        <div class="channel-lanes">
+          <div class="channel-lane" data-channel="channel.orders.inbound"><span class="lane-dot"></span><span>inbound</span><small>queue</small></div>
+          <span class="lane-arrow">→</span>
+          <div class="channel-lane" data-channel="channel.kitchen.dispatch"><span class="lane-dot"></span><span>kitchen.dispatch</span><small>queue</small></div>
+          <span class="lane-arrow">→</span>
+          <div class="channel-lane" data-channel="channel.rider.delivery"><span class="lane-dot"></span><span>rider.delivery</span><small>queue</small></div>
+          <span class="lane-arrow alt">↘</span>
+          <div class="channel-lane dead" data-channel="channel.deadletter"><span class="lane-dot"></span><span>deadletter</span><small>queue</small></div>
+        </div>
+
+        <div class="console-log" id="integrationLog" aria-live="polite">
+          <div class="console-placeholder" id="consolePlaceholder">
+            <span class="console-spark">✦</span>
+            <strong>Waiting for your next order.</strong>
+            <p>Place an order or simulate a dead letter to watch the middleware spring to life.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-brand">
+      <img src="{{ url_for('static', path='img/logo.svg') }}" alt="">
+      <div><strong>HATOD AKEAN</strong><span>Aklanon's Famous Cuisine</span></div>
+    </div>
+    <p>Made with care for Aklan's cooks, riders, and food lovers.</p>
+    <div class="footer-links">
+      <a href="#menu">Menu</a>
+      <a href="#culture">Culture</a>
+      <a href="#integration">Integration</a>
+      <button type="button" id="footerHelpButton">Help</button>
+    </div>
+  </footer>
+
+  <!-- Cart drawer -->
+  <div class="drawer-backdrop" id="cartBackdrop" hidden></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true" aria-labelledby="cartTitle">
+    <div class="cart-header">
+      <div>
+        <span class="section-kicker">Your selection</span>
+        <h2 id="cartTitle">Hatod bag <span id="cartItemCount">(0)</span></h2>
+      </div>
+      <button class="icon-button" type="button" id="cartCloseButton" aria-label="Close cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="cart-body" id="cartBody">
+      <div class="cart-empty" id="cartEmpty">
+        <span class="empty-icon">🛺</span>
+        <h3>Your hatod bag is empty</h3>
+        <p>Add a heritage dish and we'll bring Aklan to your doorstep.</p>
+        <button type="button" class="primary-cta small" id="cartBrowseButton"><span>Browse the menu</span></button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+    </div>
+    <div class="cart-footer" id="cartFooter" hidden>
+      <div class="cart-line"><span>Subtotal</span><strong id="cartSubtotal">₱0.00</strong></div>
+      <div class="cart-line muted"><span>Delivery fee</span><span>Calculated at checkout</span></div>
+      <div class="cart-total"><span>Total</span><strong id="cartTotal">₱0.00</strong></div>
+      <button class="primary-cta" type="button" id="checkoutButton">
+        <span>Continue to checkout</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <p class="cart-secure"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.9 8.1 7 10 4.1-1.9 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>Secure checkout · Cash, GCash, or Maya</p>
+    </div>
+  </aside>
+
+  <!-- Checkout modal -->
+  <div class="modal-backdrop checkout-backdrop" id="checkoutModal" hidden>
+    <div class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+      <button class="modal-close" type="button" id="checkoutCloseButton" aria-label="Close checkout">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+
+      <div id="checkoutPanel">
+        <div class="checkout-heading">
+          <span class="section-kicker">Almost there</span>
+          <h2 id="checkoutTitle">Where should we <em>hatod</em> it?</h2>
+          <p>We'll route your order to the nearest Aklan partner hub.</p>
+        </div>
+
+        <div class="checkout-layout">
+          <form class="checkout-form" id="checkoutForm" novalidate>
+            <div class="field-row">
+              <div class="field-group">
+                <label for="checkoutMunicipality">Municipality</label>
+                <div class="field-shell">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+                  <select id="checkoutMunicipality" name="municipality" required>
+                    {% for municipality in municipalities %}
+                    <option value="{{ municipality }}" {% if municipality == user.municipality %}selected{% endif %}>{{ municipality }}</option>
+                    {% endfor %}
+                  </select>
+                  <svg class="select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+                </div>
+              </div>
+              <div class="field-group">
+                <label for="checkoutBarangay">Barangay</label>
+                <div class="field-shell">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+                  <select id="checkoutBarangay" name="barangay" required></select>
+                  <svg class="select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="checkoutAddress">Complete delivery address</label>
+              <div class="field-shell">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+                <input id="checkoutAddress" name="delivery_address" type="text" autocomplete="street-address" placeholder="House no., street, landmark" required>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="checkoutContact">Mobile number</label>
+              <div class="field-shell">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></svg>
+                <input id="checkoutContact" name="contact_number" type="tel" autocomplete="tel" placeholder="0917 000 0000" required>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <span class="field-label">Payment method</span>
+              <div class="payment-options">
+                <label class="payment-option is-selected">
+                  <input type="radio" name="payment_method" value="Cash on Delivery" checked>
+                  <span class="payment-icon">₱</span>
+                  <span><strong>Cash on Delivery</strong><small>Pay the rider</small></span>
+                  <span class="radio-mark"></span>
+                </label>
+                <label class="payment-option">
+                  <input type="radio" name="payment_method" value="GCash">
+                  <span class="payment-icon gcash">G</span>
+                  <span><strong>GCash</strong><small>Scan on handoff</small></span>
+                  <span class="radio-mark"></span>
+                </label>
+                <label class="payment-option">
+                  <input type="radio" name="payment_method" value="Maya">
+                  <span class="payment-icon maya">M</span>
+                  <span><strong>Maya</strong><small>Scan on handoff</small></span>
+                  <span class="radio-mark"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="checkoutNotes">Kitchen notes <span>(optional)</span></label>
+              <div class="field-shell textarea-shell">
+                <textarea id="checkoutNotes" name="notes" rows="2" maxlength="300" placeholder="Allergies, less spicy, extra sauce…"></textarea>
+              </div>
+            </div>
+
+            <div class="form-error" id="checkoutError" role="alert" hidden></div>
+          </form>
+
+          <aside class="checkout-summary">
+            <div class="summary-location">
+              <span class="summary-icon">⌖</span>
+              <div><span>Routing to</span><strong id="checkoutHub">Kalibo Heritage Hub</strong><small id="checkoutEta">25–35 min delivery</small></div>
+            </div>
+            <div class="summary-items" id="checkoutSummaryItems"></div>
+            <div class="summary-lines">
+              <div><span>Subtotal</span><span id="checkoutSubtotal">₱0.00</span></div>
+              <div><span>Delivery fee</span><span id="checkoutDelivery">₱39.00</span></div>
+              <div class="summary-total"><span>Total</span><strong id="checkoutTotal">₱0.00</strong></div>
+            </div>
+            <button class="primary-cta" type="submit" form="checkoutForm" id="placeOrderButton">
+              <span>Place my order</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <p class="summary-note"><span>✦</span> Your order enters the live EIP bus after checkout.</p>
+          </aside>
+        </div>
+      </div>
+
+      <div class="order-success" id="orderSuccess" hidden>
+        <div class="success-burst" aria-hidden="true">✦</div>
+        <span class="success-kicker">Order accepted</span>
+        <h2>Salamat, <span id="successName">friend</span>!</h2>
+        <p>Your kitchen ticket is on its way to <strong id="successHub">the hub</strong>.</p>
+        <div class="success-reference"><span>Order reference</span><strong id="successReference">HATOD-000000</strong></div>
+        <div class="success-route" id="successRoute"></div>
+        <div class="success-timeline" id="successTimeline"></div>
+        <div class="success-actions">
+          <button class="primary-cta" type="button" id="successTrackButton"><span>Track this order</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <button class="outline-button" type="button" id="successCloseButton">Back to menu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order detail modal -->
+  <div class="modal-backdrop" id="orderModal" hidden>
+    <div class="order-modal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+      <button class="modal-close" type="button" id="orderModalCloseButton" aria-label="Close order details">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+      <div id="orderDetailContent"></div>
+    </div>
+  </div>
+
+  <!-- Profile modal -->
+  <div class="modal-backdrop" id="profileModal" hidden>
+    <div class="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <button class="modal-close" type="button" id="profileCloseButton" aria-label="Close profile">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+      <span class="section-kicker">Your account</span>
+      <h2 id="profileTitle">Delivery preference</h2>
+      <p>Choose the municipality we should default to next time.</p>
+      <form id="profileForm">
+        <div class="field-group">
+          <label for="profileMunicipality">Municipality</label>
+          <div class="field-shell">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+            <select id="profileMunicipality" name="municipality">
+              {% for municipality in municipalities %}
+              <option value="{{ municipality }}" {% if municipality == user.municipality %}selected{% endif %}>{{ municipality }}</option>
+              {% endfor %}
+            </select>
+            <svg class="select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+          </div>
+        </div>
+        <div class="form-error" id="profileError" role="alert" hidden></div>
+        <button class="primary-cta" type="submit" id="profileSaveButton"><span>Save preference</span></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Video modal -->
+  <div class="modal-backdrop video-backdrop" id="videoModal" hidden>
+    <div class="video-modal" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
+      <div class="video-modal-head">
+        <div><span class="section-kicker">Hatod Akean culture</span><h2 id="videoModalTitle">Watch the story</h2></div>
+        <button class="icon-button" type="button" id="videoCloseButton" aria-label="Close video">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="video-frame-wrap">
+        <iframe id="videoFrame" src="" title="Aklanon culture video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help modal (shared visual language) -->
+  <div class="modal-backdrop" id="helpModal" hidden>
+    <div class="modal-card help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <button class="modal-close" type="button" id="helpCloseButton" aria-label="Close help">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+      <span class="modal-eyebrow">Hatod Akean support</span>
+      <h2 id="helpTitle">Need a hand?</h2>
+      <p>Hatod Akean is a full-stack demo for Aklanon cuisine. Orders are saved in SQLite and passed through a live Enterprise Integration Pattern event bus.</p>
+      <div class="help-grid">
+        <div><span class="help-number">01</span><strong>Ordering</strong><p>Choose dishes, add them to your bag, then set your Aklan delivery zone at checkout.</p></div>
+        <div><span class="help-number">02</span><strong>Tracking</strong><p>Open My Orders to see your current status and the exact EIP messages generated for your order.</p></div>
+        <div><span class="help-number">03</span><strong>Demo filter</strong><p>Use “Simulate dead letter” in Integration to send an out-of-zone order into the error queue.</p></div>
+      </div>
+      <div class="help-contact"><span>Demo support</span><a href="mailto:hello@hatodakean.ph">hello@hatodakean.ph</a></div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
+
+  <script>
+    window.HATOD = {
+      user: {{ user_json | safe }},
+      demoMode: {{ demo_mode | tojson }}
+    };
+  </script>
+  <script src="{{ url_for('static', path='js/app.js') }}"></script>
+</body>
+</html>

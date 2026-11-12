@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hatod Akean — Aklanon's Famous Cuisine. Order authentic Aklanon dishes from Kalibo, Numancia, Banga, Ibajay, and Malay.">
+  <meta name="theme-color" content="#580F28">
+  <title>Hatod Akean — Aklanon's Famous Cuisine</title>
+  <link rel="icon" href="{{ url_for('static', path='img/logo.svg') }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            burgundy: '#580F28',
+            mango: '#FF9A00',
+            ember: '#EE6200',
+            peach: '#FBA17E',
+            sand: '#F7D794',
+            cream: '#FFF9F0'
+          },
+          fontFamily: {
+            display: ['Fredoka', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/app.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/landing.css') }}">
+</head>
+<body class="landing-body" data-page="landing" data-lang="en">
+  <div class="page-texture" aria-hidden="true"></div>
+
+  <header class="landing-nav">
+    <a class="brand" href="/" aria-label="Hatod Akean home">
+      <img class="brand-mark" src="{{ url_for('static', path='img/logo.svg') }}" alt="Hatod Akean Ati-Atihan emblem">
+      <span class="brand-copy">
+        <strong>HATOD AKEAN</strong>
+        <em data-i18n="tagline">Aklanon's Famous Cuisine</em>
+      </span>
+    </a>
+
+    <div class="nav-actions">
+      <button class="pill-button" type="button" data-help-open>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9.2a2.4 2.4 0 0 1 4.7.7c0 1.7-2.5 1.9-2.5 3.6"/><path d="M12 17.1h.01"/></svg>
+        <span data-i18n="help">Help</span>
+      </button>
+      <div class="language-wrap">
+        <button class="pill-button" type="button" id="languageButton" aria-expanded="false" aria-controls="languageMenu">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.7 5.6 3.7 9S14.4 18.5 12 21c-2.4-2.5-3.7-5.6-3.7-9S9.6 5.5 12 3Z"/></svg>
+          <span id="languageLabel">Language</span>
+          <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+        </button>
+        <div class="language-menu" id="languageMenu" hidden>
+          <button type="button" data-language="en" class="is-selected"><strong>English</strong><span>English</span></button>
+          <button type="button" data-language="akl"><strong>Akeanon</strong><span>Aklanon</span></button>
+          <button type="button" data-language="fil"><strong>Filipino</strong><span>Tagalog</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="landing-shell">
+    <section class="landing-visual" aria-labelledby="welcomeTitle">
+      <div class="visual-orb orb-one" aria-hidden="true"></div>
+      <div class="visual-orb orb-two" aria-hidden="true"></div>
+      <div class="visual-ring" aria-hidden="true"></div>
+
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="eyebrow">A taste of Aklan, delivered</span></div>
+        <h1 id="welcomeTitle">Maayong <span>pag-abot!</span></h1>
+        <p class="hero-lede" data-i18n="lede">Create your account to order your favorite dishes, save favorites, and track orders from local restaurants and fast food partners.</p>
+        <div class="hero-badges" aria-label="Service highlights">
+          <span class="hero-badge"><span class="badge-icon">✦</span><span data-i18n="badge1">Heritage recipes</span></span>
+          <span class="hero-badge"><span class="badge-icon">◷</span><span data-i18n="badge2">30-minute local delivery</span></span>
+          <span class="hero-badge"><span class="badge-icon">♡</span><span data-i18n="badge3">Made in Aklan</span></span>
+        </div>
+      </div>
+
+      <div class="hero-collage" aria-label="Ati-Atihan festival dancers and Aklanon dishes">
+        <div class="collage-main-wrap">
+          <figure class="collage-photo collage-main">
+            <img src="{{ url_for('static', path='img/ati-atihan-dancers.jpg') }}" alt="Ati-Atihan dancers at the Kalibo festival">
+            <figcaption>
+              <span class="caption-kicker">Kalibo, Aklan</span>
+              <strong>Ati-Atihan spirit</strong>
+            </figcaption>
+          </figure>
+          <div class="collage-burst" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <path d="M50 4 56 30 72 10 68 36 94 28 74 47 99 56 72 59 88 81 64 69 63 96 50 72 37 96 36 69 12 81 26 59 1 56 26 47 6 28 32 36 28 10 44 30Z"/>
+            </svg>
+          </div>
+        </div>
+
+        <figure class="collage-photo collage-dish collage-dish-one">
+          <img src="{{ url_for('static', path='img/binakoe.jpg') }}" alt="Binakoe nga Manok served in bamboo">
+          <figcaption>Binakoe</figcaption>
+        </figure>
+
+        <figure class="collage-photo collage-dish collage-dish-two">
+          <img src="{{ url_for('static', path='img/lechon.jpg') }}" alt="Crispy Lechon de Kalibo">
+          <figcaption>Lechon de Kalibo</figcaption>
+        </figure>
+
+        <div class="rating-card">
+          <div class="rating-stars" aria-hidden="true">★★★★★</div>
+          <strong>4.9</strong>
+          <span data-i18n="rating">from local food lovers</span>
+        </div>
+
+        <div class="festival-seal" aria-hidden="true">
+          <span>HALA BIRA</span>
+          <strong>AKLAN</strong>
+          <span>EST. 1212</span>
+        </div>
+      </div>
+
+      <div class="hero-footer">
+        <div class="avatar-stack" aria-hidden="true">
+          <span class="avatar avatar-one">NA</span>
+          <span class="avatar avatar-two">JP</span>
+          <span class="avatar avatar-three">RL</span>
+          <span class="avatar avatar-more">+2k</span>
+        </div>
+        <p><strong data-i18n="loved">Loved by 2,400+ food lovers</strong><span data-i18n="lovedSub">across Panay Island</span></p>
+        <span class="live-badge"><span></span><span data-i18n="openNow">Kitchens open now</span></span>
+      </div>
+    </section>
+
+    <section class="landing-auth" aria-label="Account access">
+      <div class="auth-card">
+        <div class="auth-card-shine" aria-hidden="true"></div>
+        <div class="auth-topline">
+          <div class="mini-emblem">
+            <img src="{{ url_for('static', path='img/logo.svg') }}" alt="">
+          </div>
+          <span class="secure-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.9 8.1 7 10 4.1-1.9 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg><span data-i18n="secure">Secure local ordering</span></span>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="Sign in or sign up">
+          <button class="auth-tab" id="loginTab" role="tab" aria-selected="false" aria-controls="loginPanel" type="button">Sign in</button>
+          <button class="auth-tab is-active" id="signupTab" role="tab" aria-selected="true" aria-controls="signupPanel" type="button">Sign up</button>
+        </div>
+
+        <div class="auth-heading">
+          <h2 id="authTitle">Create your account</h2>
+          <p id="authSubtitle">One account for Aklan's most loved kitchens.</p>
+        </div>
+
+        <form class="auth-form" id="loginPanel" role="tabpanel" aria-labelledby="loginTab" hidden novalidate>
+          <div class="field-group">
+            <label for="loginEmail">Email address</label>
+            <div class="field-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+              <input id="loginEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+          <div class="field-group">
+            <div class="label-row"><label for="loginPassword">Password</label><button class="text-link" type="button" data-help-open>Need help?</button></div>
+            <div class="field-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="Your password" required>
+              <button class="password-toggle" type="button" data-password-toggle="loginPassword" aria-label="Show password">
+                <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+                <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M9.8 6.2A9.8 9.8 0 0 1 12 6c6 0 9.5 6 9.5 6a16 16 0 0 1-2.1 2.8M6.3 7.6A16.6 16.6 0 0 0 2.5 12s3.5 6 9.5 6c1.3 0 2.5-.3 3.6-.7"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-error" id="loginError" role="alert" hidden></div>
+          <button class="primary-cta" id="loginButton" type="submit">
+            <span>Sign in</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <form class="auth-form" id="signupPanel" role="tabpanel" aria-labelledby="signupTab" novalidate>
+          <div class="field-group">
+            <label for="signupName">Full name</label>
+            <div class="field-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c.7-3.8 3.7-5.8 7.5-5.8s6.8 2 7.5 5.8"/></svg>
+              <input id="signupName" name="full_name" type="text" autocomplete="name" placeholder="Maria Aklanon" required>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="signupEmail">Email address</label>
+            <div class="field-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+              <input id="signupEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="signupMunicipality">Your municipality</label>
+            <div class="field-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+              <select id="signupMunicipality" name="municipality" required>
+                {% for municipality in municipalities %}
+                <option value="{{ municipality }}">{{ municipality }}</option>
+                {% endfor %}
+              </select>
+              <svg class="select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="signupPassword">Create password</label>
+            <div class="field-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <input id="signupPassword" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" minlength="8" required>
+              <button class="password-toggle" type="button" data-password-toggle="signupPassword" aria-label="Show password">
+                <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+                <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M9.8 6.2A9.8 9.8 0 0 1 12 6c6 0 9.5 6 9.5 6a16 16 0 0 1-2.1 2.8M6.3 7.6A16.6 16.6 0 0 0 2.5 12s3.5 6 9.5 6c1.3 0 2.5-.3 3.6-.7"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="signupConfirm">Confirm password</label>
+            <div class="field-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <input id="signupConfirm" name="confirm_password" type="password" autocomplete="new-password" placeholder="Repeat your password" minlength="8" required>
+              <button class="password-toggle" type="button" data-password-toggle="signupConfirm" aria-label="Show password">
+                <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+                <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M9.8 6.2A9.8 9.8 0 0 1 12 6c6 0 9.5 6 9.5 6a16 16 0 0 1-2.1 2.8M6.3 7.6A16.6 16.6 0 0 0 2.5 12s3.5 6 9.5 6c1.3 0 2.5-.3 3.6-.7"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-error" id="signupError" role="alert" hidden></div>
+          <button class="primary-cta" id="signupButton" type="submit">
+            <span>Get started</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="form-note"><span class="sparkle">✦</span> Your first order helps support Aklanon home cooks and local kitchens.</p>
+        </form>
+
+        <div class="auth-divider"><span>or explore first</span></div>
+        <button class="demo-button" type="button" id="demoButton">
+          <span class="demo-dot"></span>
+          <span>Use the demo account</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+
+        <div class="auth-trust">
+          <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>No card required</span>
+          <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Cancel anytime</span>
+        </div>
+        <p class="terms">By continuing, you agree to our friendly <button type="button" data-help-open>terms & privacy</button>.</p>
+      </div>
+
+      <p class="auth-footnote">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+        Proudly made for Aklan, Philippines
+      </p>
+    </section>
+  </main>
+
+  <footer class="landing-footer">
+    <span>© 2026 Hatod Akean</span>
+    <span class="footer-dot"></span>
+    <span>Kalibo · Numancia · Banga · Ibajay · Malay</span>
+  </footer>
+
+  <div class="modal-backdrop" id="helpModal" hidden>
+    <div class="modal-card help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <button class="modal-close" type="button" data-help-close aria-label="Close help dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+      <span class="modal-eyebrow">Hatod Akean support</span>
+      <h2 id="helpTitle">Maayong pag-abot! How can we help?</h2>
+      <p>Hatod Akean connects you with local kitchens across Aklan. This demo stores data in SQLite and streams every order through an Enterprise Integration Pattern event bus.</p>
+      <div class="help-grid">
+        <div><span class="help-number">01</span><strong>Create an account</strong><p>Tell us your name, email, and Aklan municipality. You can start ordering right away.</p></div>
+        <div><span class="help-number">02</span><strong>Choose a delivery zone</strong><p>We currently serve Kalibo, Numancia, Banga, Ibajay, and Malay / Boracay.</p></div>
+        <div><span class="help-number">03</span><strong>Track the integration trail</strong><p>After checkout, open My Orders or Integration to watch the message channels, router, translator, and filter work live.</p></div>
+      </div>
+      <div class="help-contact">
+        <span>Demo support</span>
+        <a href="mailto:hello@hatodakean.ph">hello@hatodakean.ph</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
+
+  <script>
+    window.HATOD = {
+      demoEmail: {{ demo_email | tojson }},
+      demoPassword: {{ demo_password | tojson }}
+    };
+  </script>
+  <script src="{{ url_for('static', path='js/landing.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+"""Hatod Akean application package."""
