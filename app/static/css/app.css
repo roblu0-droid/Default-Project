@@ -173,9 +173,10 @@ svg {
   width: 54px;
   height: 54px;
   flex: 0 0 auto;
-  border-radius: 50%;
+  border-radius: 14px;   /* was 50% */
   background: #fff;
   padding: 3px;
+  object-fit: contain;   /* new line */
   box-shadow: 0 6px 18px -8px rgba(88, 15, 40, 0.45);
 }
 
