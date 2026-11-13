@@ -70,7 +70,7 @@ CATEGORY_LANES = {
     "Drinks & Desserts": "kakanin-counter",
 }
 
-# Aklanon food photography is sourced from Wikimedia Commons; see README credits.
+# Aklanon food photography is sourced from Wikimedia Commons; see static/img/CREDITS.md.
 MENU_SEED: list[dict] = [
     {
         "name": "Inubaran nga Manok",
@@ -302,7 +302,7 @@ MENU_SEED: list[dict] = [
         ),
         "price_php": 95.0,
         "municipality": "Kalibo",
-        "image_url": "/static/img/puto.jpg",
+        "image_url": "/static/img/pandesal.jpg",
         "ingredients": "Wheat flour, yeast, salt, sugar, native cacao, milk, water",
         "cooking_notes": "Bake the pandesal until the crust crackles, then serve with sikwate whisked from pure cacao tablets.",
         "allergens": "Gluten (wheat); milk",
@@ -319,7 +319,7 @@ MENU_SEED: list[dict] = [
         ),
         "price_php": 145.0,
         "municipality": "Kalibo",
-        "image_url": "/static/img/ginataang-manok.jpg",
+        "image_url": "/static/img/arroz-caldo.jpg",
         "ingredients": "Glutinous rice, native chicken, ginger, garlic, onion, kasubha, patis, calamansi",
         "cooking_notes": "Sauté ginger and garlic first, then simmer the rice with chicken stock until the grains bloom.",
         "allergens": "Fish (patis)",
@@ -336,7 +336,7 @@ MENU_SEED: list[dict] = [
         ),
         "price_php": 265.0,
         "municipality": "Banga",
-        "image_url": "/static/img/tinumis.jpg",
+        "image_url": "/static/img/chicken-adobo.jpg",
         "ingredients": "Native chicken, cane vinegar, soy sauce, garlic, onion, bay leaf, peppercorn",
         "cooking_notes": "Brown the chicken, add vinegar without stirring, then reduce with soy and garlic until glossy.",
         "allergens": "Soy; gluten (soy sauce)",
@@ -353,7 +353,7 @@ MENU_SEED: list[dict] = [
         ),
         "price_php": 295.0,
         "municipality": "Kalibo",
-        "image_url": "/static/img/laing.jpg",
+        "image_url": "/static/img/sinigang-na-hipon.jpg",
         "ingredients": "Fresh shrimp, tamarind, kangkong, radish, tomato, onion, long chili, patis",
         "cooking_notes": "Simmer the tamarind first and strain, then add vegetables and shrimp last so they stay sweet.",
         "allergens": "Crustacean shellfish; fish (patis)",
@@ -370,7 +370,7 @@ MENU_SEED: list[dict] = [
         ),
         "price_php": 420.0,
         "municipality": "Kalibo",
-        "image_url": "/static/img/lechon.jpg",
+        "image_url": "/static/img/crispy-pata.jpg",
         "ingredients": "Pork leg, garlic, bay leaf, peppercorn, salt, cane vinegar, soy sauce",
         "cooking_notes": "Boil until fork-tender, dry the skin completely, then fry hot until it blisters.",
         "allergens": "Pork; soy",
@@ -387,7 +387,7 @@ MENU_SEED: list[dict] = [
         ),
         "price_php": 135.0,
         "municipality": "Kalibo",
-        "image_url": "/static/img/kakanin.jpg",
+        "image_url": "/static/img/halo-halo.jpg",
         "ingredients": "Shaved ice, sweet red beans, nata de coco, saba banana, ube halaya, leche flan, evaporated milk",
         "cooking_notes": "Layer the sweets in a tall glass, pack shaved ice on top, and pour milk just before serving.",
         "allergens": "Milk; may contain nuts",
