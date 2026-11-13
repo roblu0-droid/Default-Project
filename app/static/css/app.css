@@ -254,7 +254,7 @@ svg {
   padding: 14px 24px;
   border-radius: 999px;
   background: var(--accent-gradient);
-  color: var(--burgundy-deep);
+  color: #ffffff;
   font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 800;
