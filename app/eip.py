@@ -224,7 +224,7 @@ class EnterpriseIntegrationBus:
                 {
                     "menu_item_id": 1,
                     "name": "Inubaran nga Manok",
-                    "category": "Main Dishes",
+                    "category": "Lunch",
                     "quantity": 1,
                     "stock_qty": 18,
                     "is_available": 1,
@@ -508,7 +508,7 @@ class EnterpriseIntegrationBus:
         zone = DELIVERY_ZONES[municipality]
         categories = Counter(item["category"] for item in order["items"])
         primary_category = categories.most_common(1)[0][0]
-        lane = CATEGORY_LANES[primary_category]
+        lane = CATEGORY_LANES.get(primary_category, "hot-kitchen")
         hub = zone["hub"]
         return {
             "municipality": municipality,

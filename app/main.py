@@ -148,6 +148,7 @@ async def application_page(request: Request):
             "user_json": json.dumps(user, ensure_ascii=False),
             "municipalities": MUNICIPALITIES,
             "categories": CATEGORIES,
+            "menu_count": len(MENU_SEED),
             "videos": VIDEOS,
             "demo_mode": os.getenv("DEMO_MODE", "1") == "1",
         },

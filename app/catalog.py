@@ -61,19 +61,20 @@ DELIVERY_ZONES: dict[str, dict] = {
 }
 
 MUNICIPALITIES = list(DELIVERY_ZONES.keys())
-CATEGORIES = ["Main Dishes", "Native Delicacies", "Beverages"]
+CATEGORIES = ["Breakfast", "Lunch", "Dinner", "Drinks & Desserts"]
 
 CATEGORY_LANES = {
-    "Main Dishes": "hot-kitchen",
-    "Native Delicacies": "kakanin-counter",
-    "Beverages": "cellar",
+    "Breakfast": "morning-kitchen",
+    "Lunch": "hot-kitchen",
+    "Dinner": "grill-station",
+    "Drinks & Desserts": "kakanin-counter",
 }
 
 # Aklanon food photography is sourced from Wikimedia Commons; see README credits.
 MENU_SEED: list[dict] = [
     {
         "name": "Inubaran nga Manok",
-        "category": "Main Dishes",
+        "category": "Lunch",
         "description": (
             "Native chicken slow-simmered with banana pith (ubad), lemongrass, "
             "and fresh coconut milk. A comforting Aklanon heirloom dish."
@@ -90,7 +91,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Binakoe nga Manok",
-        "category": "Main Dishes",
+        "category": "Dinner",
         "description": (
             "Native chicken cooked in bamboo with lemongrass, ginger, and "
             "coconut water — smoky, herby, and deeply Aklanon."
@@ -107,7 +108,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Linapay / Tinamuk",
-        "category": "Main Dishes",
+        "category": "Lunch",
         "description": (
             "Freshwater shrimp pounded with coconut, ginger, and chili, wrapped "
             "in taro leaves and simmered in gata."
@@ -124,7 +125,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Tinumis",
-        "category": "Main Dishes",
+        "category": "Lunch",
         "description": (
             "Aklanon pork blood stew with native vinegar, garlic, and lemongrass "
             "— tangy, savory, and slow-cooked."
@@ -141,7 +142,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Lechon de Kalibo",
-        "category": "Main Dishes",
+        "category": "Dinner",
         "description": (
             "Crispy local roast pork seasoned with lemongrass and Aklanon "
             "spices. Served with tangy liver sauce."
@@ -158,7 +159,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Latik",
-        "category": "Native Delicacies",
+        "category": "Drinks & Desserts",
         "description": (
             "Chewy rice cake bathed in sweet coconut caramel and toasted latik "
             "curds."
@@ -175,7 +176,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Inday-Inday",
-        "category": "Native Delicacies",
+        "category": "Drinks & Desserts",
         "description": (
             "Soft steamed glutinous rice rolls with coconut and muscovado — a "
             "market-day favorite."
@@ -192,7 +193,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Alupi",
-        "category": "Native Delicacies",
+        "category": "Drinks & Desserts",
         "description": (
             "Cassava and coconut cake, steamed in banana leaf with a tender, "
             "fragrant crumb."
@@ -209,7 +210,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Ibos",
-        "category": "Native Delicacies",
+        "category": "Drinks & Desserts",
         "description": (
             "Sticky rice wrapped in young coconut leaves, gently sweetened with "
             "coconut sugar."
@@ -226,7 +227,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Baye-Baye",
-        "category": "Native Delicacies",
+        "category": "Drinks & Desserts",
         "description": (
             "Pounded young rice, corn, and coconut baked into a nutty, chewy "
             "heritage treat."
@@ -243,7 +244,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Ampaw",
-        "category": "Native Delicacies",
+        "category": "Drinks & Desserts",
         "description": (
             "Airy puffed rice sweets glazed with muscovado — crisp, crackly, "
             "and nostalgic."
@@ -260,7 +261,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Tuba",
-        "category": "Beverages",
+        "category": "Drinks & Desserts",
         "description": (
             "Fresh coconut sap tapped at dawn — lightly sweet, tart, and best "
             "served chilled."
@@ -277,7 +278,7 @@ MENU_SEED: list[dict] = [
     },
     {
         "name": "Bahalina",
-        "category": "Beverages",
+        "category": "Drinks & Desserts",
         "description": (
             "Aged coconut wine with deep amber notes of caramel and citrus. A "
             "true Aklanon pour."
@@ -291,6 +292,108 @@ MENU_SEED: list[dict] = [
         "prep_minutes": 5,
         "stock_qty": 8,
         "is_signature": 0,
+    },
+    {
+        "name": "Pandesal at Sikwate",
+        "category": "Breakfast",
+        "description": (
+            "Warm pan de sal straight from the oven with a cup of thick native "
+            "chocolate — the classic Filipino morning pair."
+        ),
+        "price_php": 95.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/puto.jpg",
+        "ingredients": "Wheat flour, yeast, salt, sugar, native cacao, milk, water",
+        "cooking_notes": "Bake the pandesal until the crust crackles, then serve with sikwate whisked from pure cacao tablets.",
+        "allergens": "Gluten (wheat); milk",
+        "prep_minutes": 15,
+        "stock_qty": 40,
+        "is_signature": 0,
+    },
+    {
+        "name": "Arroz Caldo",
+        "category": "Breakfast",
+        "description": (
+            "Creamy ginger rice porridge with native chicken, kasubha, and a "
+            "squeeze of calamansi on top."
+        ),
+        "price_php": 145.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/ginataang-manok.jpg",
+        "ingredients": "Glutinous rice, native chicken, ginger, garlic, onion, kasubha, patis, calamansi",
+        "cooking_notes": "Sauté ginger and garlic first, then simmer the rice with chicken stock until the grains bloom.",
+        "allergens": "Fish (patis)",
+        "prep_minutes": 30,
+        "stock_qty": 22,
+        "is_signature": 0,
+    },
+    {
+        "name": "Chicken Adobo",
+        "category": "Lunch",
+        "description": (
+            "Native chicken braised in soy, cane vinegar, garlic, and bay leaf — "
+            "the national classic, cooked the slow way."
+        ),
+        "price_php": 265.0,
+        "municipality": "Banga",
+        "image_url": "/static/img/tinumis.jpg",
+        "ingredients": "Native chicken, cane vinegar, soy sauce, garlic, onion, bay leaf, peppercorn",
+        "cooking_notes": "Brown the chicken, add vinegar without stirring, then reduce with soy and garlic until glossy.",
+        "allergens": "Soy; gluten (soy sauce)",
+        "prep_minutes": 35,
+        "stock_qty": 20,
+        "is_signature": 1,
+    },
+    {
+        "name": "Sinigang na Hipon",
+        "category": "Lunch",
+        "description": (
+            "Tamarind-soured broth with fresh shrimp, kangkong, radish, and long "
+            "chili — bright, tangy, and comforting."
+        ),
+        "price_php": 295.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/laing.jpg",
+        "ingredients": "Fresh shrimp, tamarind, kangkong, radish, tomato, onion, long chili, patis",
+        "cooking_notes": "Simmer the tamarind first and strain, then add vegetables and shrimp last so they stay sweet.",
+        "allergens": "Crustacean shellfish; fish (patis)",
+        "prep_minutes": 30,
+        "stock_qty": 16,
+        "is_signature": 0,
+    },
+    {
+        "name": "Crispy Pata",
+        "category": "Dinner",
+        "description": (
+            "Deep-fried pork leg with shatter-crisp skin and tender meat, served "
+            "with a soy-vinegar dipping sauce."
+        ),
+        "price_php": 420.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/lechon.jpg",
+        "ingredients": "Pork leg, garlic, bay leaf, peppercorn, salt, cane vinegar, soy sauce",
+        "cooking_notes": "Boil until fork-tender, dry the skin completely, then fry hot until it blisters.",
+        "allergens": "Pork; soy",
+        "prep_minutes": 60,
+        "stock_qty": 8,
+        "is_signature": 1,
+    },
+    {
+        "name": "Halo-Halo",
+        "category": "Drinks & Desserts",
+        "description": (
+            "Shaved ice layered with sweet beans, nata, leche flan, and ube "
+            "halaya, finished with evaporated milk."
+        ),
+        "price_php": 135.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/kakanin.jpg",
+        "ingredients": "Shaved ice, sweet red beans, nata de coco, saba banana, ube halaya, leche flan, evaporated milk",
+        "cooking_notes": "Layer the sweets in a tall glass, pack shaved ice on top, and pour milk just before serving.",
+        "allergens": "Milk; may contain nuts",
+        "prep_minutes": 12,
+        "stock_qty": 30,
+        "is_signature": 1,
     },
 ]
 

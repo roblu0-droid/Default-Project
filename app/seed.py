@@ -22,18 +22,24 @@ def seed_database() -> None:
                 ("Nene Aklanon", DEMO_EMAIL, hash_password(DEMO_PASSWORD), "Kalibo"),
             )
 
-        if conn.execute("SELECT COUNT(*) AS c FROM menu_items").fetchone()["c"] == 0:
-            for item in MENU_SEED:
+        # Sync the menu on every boot instead of only seeding an empty table.
+        # catalog.py is the source of truth: existing dishes get their category,
+        # copy and price refreshed, new dishes get inserted. Stock and
+        # availability are left untouched so live inventory survives a restart.
+        for item in MENU_SEED:
+            existing = conn.execute(
+                "SELECT id FROM menu_items WHERE name = ?", (item["name"],)
+            ).fetchone()
+            if existing:
                 conn.execute(
                     """
-                    INSERT INTO menu_items (
-                        name, category, description, price_php, municipality,
-                        image_url, ingredients, cooking_notes, allergens,
-                        prep_minutes, stock_qty, is_available, is_signature
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
+                    UPDATE menu_items
+                       SET category = ?, description = ?, price_php = ?,
+                           municipality = ?, image_url = ?, ingredients = ?,
+                           cooking_notes = ?, allergens = ?, prep_minutes = ?
+                     WHERE id = ?
                     """,
                     (
-                        item["name"],
                         item["category"],
                         item["description"],
                         item["price_php"],
@@ -43,7 +49,30 @@ def seed_database() -> None:
                         item["cooking_notes"],
                         item["allergens"],
                         item["prep_minutes"],
-                        item["stock_qty"],
-                        item["is_signature"],
+                        existing["id"],
                     ),
                 )
+                continue
+            conn.execute(
+                """
+                INSERT INTO menu_items (
+                    name, category, description, price_php, municipality,
+                    image_url, ingredients, cooking_notes, allergens,
+                    prep_minutes, stock_qty, is_available, is_signature
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
+                """,
+                (
+                    item["name"],
+                    item["category"],
+                    item["description"],
+                    item["price_php"],
+                    item["municipality"],
+                    item["image_url"],
+                    item["ingredients"],
+                    item["cooking_notes"],
+                    item["allergens"],
+                    item["prep_minutes"],
+                    item["stock_qty"],
+                    item["is_signature"],
+                ),
+            )

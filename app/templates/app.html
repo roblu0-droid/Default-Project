@@ -130,9 +130,10 @@
             <button type="submit">Find a dish</button>
           </form>
           <div class="hero-quick-actions">
-            <button type="button" class="hero-chip" data-category-jump="Main Dishes"><span>🍲</span> Main dishes</button>
-            <button type="button" class="hero-chip" data-category-jump="Native Delicacies"><span>🍡</span> Kakanin</button>
-            <button type="button" class="hero-chip" data-category-jump="Beverages"><span>🥥</span> Local drinks</button>
+            <button type="button" class="hero-chip" data-category-jump="Breakfast"><span>🍳</span> Breakfast</button>
+            <button type="button" class="hero-chip" data-category-jump="Lunch"><span>🍲</span> Lunch</button>
+            <button type="button" class="hero-chip" data-category-jump="Dinner"><span>🍖</span> Dinner</button>
+            <button type="button" class="hero-chip" data-category-jump="Drinks &amp; Desserts"><span>🍧</span> Drinks &amp; desserts</button>
             <button type="button" class="hero-chip hero-chip-live" id="heroTraceButton"><span class="live-dot"></span> Live EIP trail</button>
           </div>
         </div>
@@ -156,7 +157,7 @@
         </div>
 
         <div class="hero-stats">
-          <div><strong>13</strong><span>heirloom dishes</span></div>
+          <div><strong>{{ menu_count }}</strong><span>heirloom dishes</span></div>
           <div><strong>5</strong><span>Aklan municipalities</span></div>
           <div><strong>3</strong><span>local partner hubs</span></div>
           <div class="stat-live"><strong><span class="live-dot"></span>Live</strong><span>event bus online</span></div>
