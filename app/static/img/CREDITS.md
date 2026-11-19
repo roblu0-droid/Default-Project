@@ -46,6 +46,16 @@ Each image was downloaded at 1280 px wide and is otherwise unmodified.
 All 22 downloaded at 1280 px wide and otherwise unmodified. Attribution and license
 links are recorded above for every file, in keeping with the CC license terms.
 
+## Replacements (Tinumis → Dinuguan, Inday-Inday → Leche Flan)
+
+| Local file | Dish | Source (Commons file) | Author | License |
+|---|---|---|---|---|
+| `dinuguan.jpg` | Dinuguan | [Dinuguan, Feb 2024.jpg](https://commons.wikimedia.org/wiki/File:Dinuguan,_Feb_2024.jpg) | Ralff Nestor Nacor | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| `leche-flan.jpg` | Leche Flan | [Leche flan (Philippines) 01.jpg](https://commons.wikimedia.org/wiki/File:Leche_flan_(Philippines)_01.jpg) | Obsidian Soul | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+
+Both downloaded at 1280 px wide and otherwise unmodified. The old `tinumis.jpg` and
+`kakanin.jpg` files remain in this folder but are no longer referenced by the menu.
+
 ## Earlier dishes
 
 The rest of the food photos (`binakoe.jpg`, `ginataang-manok.jpg`, `laing.jpg`,

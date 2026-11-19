@@ -124,19 +124,19 @@ MENU_SEED: list[dict] = [
         "is_signature": 1,
     },
     {
-        "name": "Tinumis",
+        "name": "Dinuguan",
         "category": "Lunch",
         "description": (
-            "Aklanon pork blood stew with native vinegar, garlic, and lemongrass "
-            "— tangy, savory, and slow-cooked."
+            "The traditional Filipino pork blood stew — rich, savoury and "
+            "slow-cooked with vinegar, garlic and chili. Best with puto."
         ),
         "price_php": 230.0,
         "municipality": "Banga",
-        "image_url": "/static/img/tinumis.jpg",
-        "ingredients": "Pork, pork blood, native vinegar, garlic, onion, ginger, lemongrass, bay leaf, chili",
-        "cooking_notes": "Cook the pork until tender, add blood and vinegar, then reduce slowly until glossy and deeply savoury.",
+        "image_url": "/static/img/dinuguan.jpg",
+        "ingredients": "Pork, pork blood, cane vinegar, garlic, onion, bay leaf, black pepper, chili",
+        "cooking_notes": "Braise the pork until tender, then pour in the blood while stirring constantly so it stays smooth; simmer low until thick and dark.",
         "allergens": "Pork; sulfites may be present in vinegar",
-        "prep_minutes": 40,
+        "prep_minutes": 45,
         "stock_qty": 20,
         "is_signature": 0,
     },
@@ -175,19 +175,19 @@ MENU_SEED: list[dict] = [
         "is_signature": 0,
     },
     {
-        "name": "Inday-Inday",
+        "name": "Leche Flan",
         "category": "Drinks & Desserts",
         "description": (
-            "Soft steamed glutinous rice rolls with coconut and muscovado — a "
-            "market-day favorite."
+            "Silky caramel custard made with eggs and milk — the classic "
+            "Filipino fiesta dessert, chilled and served with its own syrup."
         ),
-        "price_php": 85.0,
+        "price_php": 95.0,
         "municipality": "Banga",
-        "image_url": "/static/img/kakanin.jpg",
-        "ingredients": "Glutinous rice, coconut, muscovado sugar, banana leaf",
-        "cooking_notes": "Steam until the rice is translucent and the coconut sugar has melted through.",
-        "allergens": "Coconut",
-        "prep_minutes": 20,
+        "image_url": "/static/img/leche-flan.jpg",
+        "ingredients": "Eggs, condensed milk, evaporated milk, sugar, vanilla, caramelised sugar",
+        "cooking_notes": "Coat the mold with caramel, strain in the custard, and steam low and slow until just set; chill overnight before unmolding.",
+        "allergens": "Egg; milk",
+        "prep_minutes": 40,
         "stock_qty": 28,
         "is_signature": 0,
     },
