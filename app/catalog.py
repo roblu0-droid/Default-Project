@@ -79,7 +79,7 @@ MENU_SEED: list[dict] = [
             "Native chicken slow-simmered with banana pith (ubad), lemongrass, "
             "and fresh coconut milk. A comforting Aklanon heirloom dish."
         ),
-        "price_php": 285.0,
+        "price_php": 180.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/ginataang-manok.jpg",
         "ingredients": "Native chicken, ubad (banana pith), coconut milk, lemongrass, ginger, garlic, onion, patis, black pepper",
@@ -96,7 +96,7 @@ MENU_SEED: list[dict] = [
             "Native chicken cooked in bamboo with lemongrass, ginger, and "
             "coconut water — smoky, herby, and deeply Aklanon."
         ),
-        "price_php": 320.0,
+        "price_php": 195.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/binakoe.jpg",
         "ingredients": "Native chicken, young coconut water, coconut meat, lemongrass, ginger, garlic, onion, chili leaves, salt",
@@ -113,7 +113,7 @@ MENU_SEED: list[dict] = [
             "Freshwater shrimp pounded with coconut, ginger, and chili, wrapped "
             "in taro leaves and simmered in gata."
         ),
-        "price_php": 245.0,
+        "price_php": 155.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/laing.jpg",
         "ingredients": "Freshwater shrimp, grated coconut, taro leaves, coconut milk, ginger, garlic, shallots, chili",
@@ -130,7 +130,7 @@ MENU_SEED: list[dict] = [
             "The traditional Filipino pork blood stew — rich, savoury and "
             "slow-cooked with vinegar, garlic and chili. Best with puto."
         ),
-        "price_php": 230.0,
+        "price_php": 145.0,
         "municipality": "Banga",
         "image_url": "/static/img/dinuguan.jpg",
         "ingredients": "Pork, pork blood, cane vinegar, garlic, onion, bay leaf, black pepper, chili",
@@ -147,7 +147,7 @@ MENU_SEED: list[dict] = [
             "Crispy local roast pork seasoned with lemongrass and Aklanon "
             "spices. Served with tangy liver sauce."
         ),
-        "price_php": 650.0,
+        "price_php": 350.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/lechon.jpg",
         "ingredients": "Native pork, lemongrass, garlic, calamansi, sea salt, black pepper, liver sauce",
@@ -164,7 +164,7 @@ MENU_SEED: list[dict] = [
             "Chewy rice cake bathed in sweet coconut caramel and toasted latik "
             "curds."
         ),
-        "price_php": 95.0,
+        "price_php": 55.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/latik.jpg",
         "ingredients": "Glutinous rice, coconut milk, muscovado sugar, toasted coconut curds",
@@ -181,7 +181,7 @@ MENU_SEED: list[dict] = [
             "Silky caramel custard made with eggs and milk — the classic "
             "Filipino fiesta dessert, chilled and served with its own syrup."
         ),
-        "price_php": 95.0,
+        "price_php": 55.0,
         "municipality": "Banga",
         "image_url": "/static/img/leche-flan.jpg",
         "ingredients": "Eggs, condensed milk, evaporated milk, sugar, vanilla, caramelised sugar",
@@ -198,7 +198,7 @@ MENU_SEED: list[dict] = [
             "Cassava and coconut cake, steamed in banana leaf with a tender, "
             "fragrant crumb."
         ),
-        "price_php": 90.0,
+        "price_php": 50.0,
         "municipality": "Numancia",
         "image_url": "/static/img/puto.jpg",
         "ingredients": "Grated cassava, coconut milk, sugar, banana leaf, a pinch of salt",
@@ -215,7 +215,7 @@ MENU_SEED: list[dict] = [
             "Sticky rice wrapped in young coconut leaves, gently sweetened with "
             "coconut sugar."
         ),
-        "price_php": 75.0,
+        "price_php": 45.0,
         "municipality": "Ibajay",
         "image_url": "/static/img/ibos.jpg",
         "ingredients": "Glutinous rice, coconut milk, coconut sugar, young coconut leaves",
@@ -232,7 +232,7 @@ MENU_SEED: list[dict] = [
             "Pounded young rice, corn, and coconut baked into a nutty, chewy "
             "heritage treat."
         ),
-        "price_php": 110.0,
+        "price_php": 60.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/suman-latik.jpg",
         "ingredients": "Young rice, sweet corn, coconut, muscovado sugar, banana leaf",
@@ -249,7 +249,7 @@ MENU_SEED: list[dict] = [
             "Airy puffed rice sweets glazed with muscovado — crisp, crackly, "
             "and nostalgic."
         ),
-        "price_php": 65.0,
+        "price_php": 40.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/ampaw.jpg",
         "ingredients": "Puffed rice, muscovado syrup, peanuts (optional), coconut oil",
@@ -266,7 +266,7 @@ MENU_SEED: list[dict] = [
             "Fresh coconut sap tapped at dawn — lightly sweet, tart, and best "
             "served chilled."
         ),
-        "price_php": 120.0,
+        "price_php": 60.0,
         "municipality": "Ibajay",
         "image_url": "/static/img/palm-wine.jpg",
         "ingredients": "Fresh coconut sap (tuba), a squeeze of calamansi",
@@ -283,7 +283,7 @@ MENU_SEED: list[dict] = [
             "Aged coconut wine with deep amber notes of caramel and citrus. A "
             "true Aklanon pour."
         ),
-        "price_php": 180.0,
+        "price_php": 85.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/toddy.jpg",
         "ingredients": "Aged coconut sap wine, coconut bark tannin",
@@ -300,7 +300,7 @@ MENU_SEED: list[dict] = [
             "Warm pan de sal straight from the oven with a cup of thick native "
             "chocolate — the classic Filipino morning pair."
         ),
-        "price_php": 95.0,
+        "price_php": 65.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/pandesal.jpg",
         "ingredients": "Wheat flour, yeast, salt, sugar, native cacao, milk, water",
@@ -317,7 +317,7 @@ MENU_SEED: list[dict] = [
             "Creamy ginger rice porridge with native chicken, kasubha, and a "
             "squeeze of calamansi on top."
         ),
-        "price_php": 145.0,
+        "price_php": 95.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/arroz-caldo.jpg",
         "ingredients": "Glutinous rice, native chicken, ginger, garlic, onion, kasubha, patis, calamansi",
@@ -334,7 +334,7 @@ MENU_SEED: list[dict] = [
             "Native chicken braised in soy, cane vinegar, garlic, and bay leaf — "
             "the national classic, cooked the slow way."
         ),
-        "price_php": 265.0,
+        "price_php": 160.0,
         "municipality": "Banga",
         "image_url": "/static/img/chicken-adobo.jpg",
         "ingredients": "Native chicken, cane vinegar, soy sauce, garlic, onion, bay leaf, peppercorn",
@@ -351,7 +351,7 @@ MENU_SEED: list[dict] = [
             "Tamarind-soured broth with fresh shrimp, kangkong, radish, and long "
             "chili — bright, tangy, and comforting."
         ),
-        "price_php": 295.0,
+        "price_php": 185.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/sinigang-na-hipon.jpg",
         "ingredients": "Fresh shrimp, tamarind, kangkong, radish, tomato, onion, long chili, patis",
@@ -368,7 +368,7 @@ MENU_SEED: list[dict] = [
             "Deep-fried pork leg with shatter-crisp skin and tender meat, served "
             "with a soy-vinegar dipping sauce."
         ),
-        "price_php": 420.0,
+        "price_php": 280.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/crispy-pata.jpg",
         "ingredients": "Pork leg, garlic, bay leaf, peppercorn, salt, cane vinegar, soy sauce",
@@ -385,7 +385,7 @@ MENU_SEED: list[dict] = [
             "Shaved ice layered with sweet beans, nata, leche flan, and ube "
             "halaya, finished with evaporated milk."
         ),
-        "price_php": 135.0,
+        "price_php": 75.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/halo-halo.jpg",
         "ingredients": "Shaved ice, sweet red beans, nata de coco, saba banana, ube halaya, leche flan, evaporated milk",
@@ -403,7 +403,7 @@ MENU_SEED: list[dict] = [
             "Cured beef tapa seared until the edges caramelise, served with "
             "garlic rice and a sunny egg — the everyday Filipino morning classic."
         ),
-        "price_php": 165.0,
+        "price_php": 110.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/tapsilog.jpg",
         "ingredients": "Beef, cane vinegar, soy sauce, garlic, brown sugar, rice, egg",
@@ -420,7 +420,7 @@ MENU_SEED: list[dict] = [
             "Native longganisa snapped from its casing and fried until glossy, "
             "paired with garlic rice and egg."
         ),
-        "price_php": 155.0,
+        "price_php": 105.0,
         "municipality": "Banga",
         "image_url": "/static/img/longsilog.jpg",
         "ingredients": "Pork, garlic, cane vinegar, soy sauce, brown sugar, native spices, rice, egg",
@@ -437,7 +437,7 @@ MENU_SEED: list[dict] = [
             "Butterflied milkfish fried until the skin crackles, with garlic "
             "rice, egg and a wedge of calamansi."
         ),
-        "price_php": 185.0,
+        "price_php": 120.0,
         "municipality": "Ibajay",
         "image_url": "/static/img/bangsilog.jpg",
         "ingredients": "Milkfish, garlic, soy sauce, cane vinegar, rice, egg, calamansi",
@@ -454,7 +454,7 @@ MENU_SEED: list[dict] = [
             "Sweet-cured pork tocino with a lacquered crust, garlic rice, egg "
             "and a spoon of atchara."
         ),
-        "price_php": 160.0,
+        "price_php": 105.0,
         "municipality": "Numancia",
         "image_url": "/static/img/tosilog.jpg",
         "ingredients": "Pork belly, sugar, salt, annatto, garlic, rice, egg, atchara",
@@ -471,7 +471,7 @@ MENU_SEED: list[dict] = [
             "Filipino chocolate rice porridge stirred from native cacao, rich "
             "and warm — good with a side of tuyo."
         ),
-        "price_php": 110.0,
+        "price_php": 70.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/champorado.jpg",
         "ingredients": "Glutinous rice, native cacao, milk, sugar, salted dried fish (tuyo)",
@@ -488,7 +488,7 @@ MENU_SEED: list[dict] = [
             "Charred eggplant flattened into an egg omelette — smoky, soft "
             "and surprisingly filling."
         ),
-        "price_php": 135.0,
+        "price_php": 90.0,
         "municipality": "Malay",
         "image_url": "/static/img/tortang-talong.jpg",
         "ingredients": "Eggplant, egg, onion, garlic, salt, pepper",
@@ -505,7 +505,7 @@ MENU_SEED: list[dict] = [
             "Bamboo-smoked milkfish with a deep amber colour, served with "
             "garlic rice and egg."
         ),
-        "price_php": 175.0,
+        "price_php": 115.0,
         "municipality": "Ibajay",
         "image_url": "/static/img/tinapang-bangus.jpg",
         "ingredients": "Milkfish, bamboo smoke, salt, rice, egg, calamansi",
@@ -522,7 +522,7 @@ MENU_SEED: list[dict] = [
             "Soft rice cake baked in a banana leaf, brushed with butter and "
             "topped with salted egg and cheese."
         ),
-        "price_php": 125.0,
+        "price_php": 80.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/bibingka.jpg",
         "ingredients": "Rice flour, coconut milk, egg, sugar, salted egg, cheese, banana leaf",
@@ -540,7 +540,7 @@ MENU_SEED: list[dict] = [
             "Oxtail and vegetables in a velvety peanut sauce, served the "
             "proper way with bagoong."
         ),
-        "price_php": 345.0,
+        "price_php": 195.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/kare-kare.jpg",
         "ingredients": "Oxtail, ground peanuts, annatto, eggplant, sitaw, banana heart, bagoong",
@@ -557,7 +557,7 @@ MENU_SEED: list[dict] = [
             "Pork belly boiled until tender then fried hard until the skin "
             "crackles, with lechon dipping sauce."
         ),
-        "price_php": 295.0,
+        "price_php": 180.0,
         "municipality": "Banga",
         "image_url": "/static/img/lechon-kawali.jpg",
         "ingredients": "Pork belly, garlic, bay leaf, peppercorn, salt, soy sauce, lechon sauce",
@@ -574,7 +574,7 @@ MENU_SEED: list[dict] = [
             "Ilocano-style mixed vegetables simmered with shrimp bagoong — "
             "savoury, earthy and honest."
         ),
-        "price_php": 215.0,
+        "price_php": 135.0,
         "municipality": "Numancia",
         "image_url": "/static/img/pinakbet.jpg",
         "ingredients": "Squash, eggplant, okra, sitaw, tomato, onion, shrimp bagoong",
@@ -591,7 +591,7 @@ MENU_SEED: list[dict] = [
             "Sizzling chopped pork with onion, chili and calamansi — loud, "
             "sharp and made for sharing."
         ),
-        "price_php": 285.0,
+        "price_php": 175.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/sisig.jpg",
         "ingredients": "Pork cheek, onion, garlic, chili, mayonnaise, calamansi, soy sauce",
@@ -608,7 +608,7 @@ MENU_SEED: list[dict] = [
             "Fine rice noodles tossed with chicken, shrimp and garden "
             "vegetables — a fiesta-table staple."
         ),
-        "price_php": 235.0,
+        "price_php": 150.0,
         "municipality": "Malay",
         "image_url": "/static/img/pancit-bihon.jpg",
         "ingredients": "Rice noodles, chicken, shrimp, cabbage, carrot, onion, soy sauce, calamansi",
@@ -626,7 +626,7 @@ MENU_SEED: list[dict] = [
             "Native chicken grilled over coals with annatto, lemongrass and "
             "garlic — smoky, juicy and golden."
         ),
-        "price_php": 275.0,
+        "price_php": 150.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/chicken-inasal.jpg",
         "ingredients": "Native chicken, annatto, lemongrass, garlic, cane vinegar, soy sauce, oil",
@@ -643,7 +643,7 @@ MENU_SEED: list[dict] = [
             "Pork skewers marinated in vinegar, soy and garlic, grilled until "
             "the edges char and caramelise."
         ),
-        "price_php": 195.0,
+        "price_php": 120.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/pork-barbecue.jpg",
         "ingredients": "Pork, cane vinegar, soy sauce, garlic, sugar, banana ketchup, bamboo skewers",
@@ -660,7 +660,7 @@ MENU_SEED: list[dict] = [
             "Whole milkfish stuffed with lemongrass and salt, grilled until "
             "the skin is smoky and crisp."
         ),
-        "price_php": 265.0,
+        "price_php": 165.0,
         "municipality": "Ibajay",
         "image_url": "/static/img/inihaw-na-bangus.jpg",
         "ingredients": "Milkfish, lemongrass, salt, tomato, onion, soy-vinegar dip",
@@ -677,7 +677,7 @@ MENU_SEED: list[dict] = [
             "Beef shank simmered for hours until the marrow is soft, with "
             "corn, cabbage and a clear, sweet broth."
         ),
-        "price_php": 395.0,
+        "price_php": 250.0,
         "municipality": "Numancia",
         "image_url": "/static/img/bulalo.jpg",
         "ingredients": "Beef shank, marrow, corn, cabbage, lemongrass, onion, peppercorn",
@@ -694,7 +694,7 @@ MENU_SEED: list[dict] = [
             "Pork in tamarind broth with taro, radish and kangkong — sour, "
             "warm and deeply comforting."
         ),
-        "price_php": 285.0,
+        "price_php": 165.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/sinigang-na-baboy.jpg",
         "ingredients": "Pork belly, tamarind, taro, radish, kangkong, tomato, onion",
@@ -711,7 +711,7 @@ MENU_SEED: list[dict] = [
             "Clear beef broth with taro, chayote, cabbage and carrots; simply "
             "seasoned with peppercorn and onion."
         ),
-        "price_php": 325.0,
+        "price_php": 195.0,
         "municipality": "Banga",
         "image_url": "/static/img/beef-nilaga.jpg",
         "ingredients": "Beef, taro, chayote, cabbage, carrot, onion, peppercorn, salt",
@@ -728,7 +728,7 @@ MENU_SEED: list[dict] = [
             "Western Visayas beef soup with shank, lemongrass and cane "
             "vinegar — sour, hearty and slow-cooked."
         ),
-        "price_php": 365.0,
+        "price_php": 210.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/kansi.jpg",
         "ingredients": "Beef shank, lemongrass, garlic, cane vinegar, sitaw, onion, peppercorn",
@@ -746,7 +746,7 @@ MENU_SEED: list[dict] = [
             "Young coconut strips and pandan jelly folded into sweet cream — "
             "cool, fragrant and purely Pinoy."
         ),
-        "price_php": 115.0,
+        "price_php": 65.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/buko-pandan.jpg",
         "ingredients": "Young coconut, pandan jelly, cream, sugar, pandan extract",
@@ -763,7 +763,7 @@ MENU_SEED: list[dict] = [
             "Silken tofu in warm arnibal syrup with sago pearls — the "
             "street-corner dessert many grew up with."
         ),
-        "price_php": 85.0,
+        "price_php": 45.0,
         "municipality": "Kalibo",
         "image_url": "/static/img/taho.jpg",
         "ingredients": "Silken tofu, cane syrup (arnibal), sago pearls, vanilla",
