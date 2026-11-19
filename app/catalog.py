@@ -395,6 +395,384 @@ MENU_SEED: list[dict] = [
         "stock_qty": 30,
         "is_signature": 1,
     },
+    # ---------------------------------------------------------------- Breakfast
+    {
+        "name": "Tapsilog",
+        "category": "Breakfast",
+        "description": (
+            "Cured beef tapa seared until the edges caramelise, served with "
+            "garlic rice and a sunny egg — the everyday Filipino morning classic."
+        ),
+        "price_php": 165.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/tapsilog.jpg",
+        "ingredients": "Beef, cane vinegar, soy sauce, garlic, brown sugar, rice, egg",
+        "cooking_notes": "Marinate the beef overnight, pan-fry until sticky at the edges, and serve over garlic rice with a fried egg.",
+        "allergens": "Soy; gluten (soy sauce); egg",
+        "prep_minutes": 25,
+        "stock_qty": 18,
+        "is_signature": 1,
+    },
+    {
+        "name": "Longsilog",
+        "category": "Breakfast",
+        "description": (
+            "Native longganisa snapped from its casing and fried until glossy, "
+            "paired with garlic rice and egg."
+        ),
+        "price_php": 155.0,
+        "municipality": "Banga",
+        "image_url": "/static/img/longsilog.jpg",
+        "ingredients": "Pork, garlic, cane vinegar, soy sauce, brown sugar, native spices, rice, egg",
+        "cooking_notes": "Prick the sausages before frying so they cook evenly, then rest them before plating with rice and egg.",
+        "allergens": "Soy; gluten; egg",
+        "prep_minutes": 20,
+        "stock_qty": 20,
+        "is_signature": 0,
+    },
+    {
+        "name": "Bangsilog",
+        "category": "Breakfast",
+        "description": (
+            "Butterflied milkfish fried until the skin crackles, with garlic "
+            "rice, egg and a wedge of calamansi."
+        ),
+        "price_php": 185.0,
+        "municipality": "Ibajay",
+        "image_url": "/static/img/bangsilog.jpg",
+        "ingredients": "Milkfish, garlic, soy sauce, cane vinegar, rice, egg, calamansi",
+        "cooking_notes": "Score the fish so it fries evenly, then serve with garlic rice and a dip of soy and calamansi.",
+        "allergens": "Fish; soy; egg",
+        "prep_minutes": 25,
+        "stock_qty": 14,
+        "is_signature": 0,
+    },
+    {
+        "name": "Tosilog",
+        "category": "Breakfast",
+        "description": (
+            "Sweet-cured pork tocino with a lacquered crust, garlic rice, egg "
+            "and a spoon of atchara."
+        ),
+        "price_php": 160.0,
+        "municipality": "Numancia",
+        "image_url": "/static/img/tosilog.jpg",
+        "ingredients": "Pork belly, sugar, salt, annatto, garlic, rice, egg, atchara",
+        "cooking_notes": "Fry the tocino in a little oil over low heat so the sugar glazes instead of burning.",
+        "allergens": "Egg",
+        "prep_minutes": 20,
+        "stock_qty": 18,
+        "is_signature": 0,
+    },
+    {
+        "name": "Champorado",
+        "category": "Breakfast",
+        "description": (
+            "Filipino chocolate rice porridge stirred from native cacao, rich "
+            "and warm — good with a side of tuyo."
+        ),
+        "price_php": 110.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/champorado.jpg",
+        "ingredients": "Glutinous rice, native cacao, milk, sugar, salted dried fish (tuyo)",
+        "cooking_notes": "Simmer the rice until it bursts, then whisk in cacao and milk until glossy and thick.",
+        "allergens": "Milk; fish (tuyo)",
+        "prep_minutes": 25,
+        "stock_qty": 24,
+        "is_signature": 0,
+    },
+    {
+        "name": "Tortang Talong",
+        "category": "Breakfast",
+        "description": (
+            "Charred eggplant flattened into an egg omelette — smoky, soft "
+            "and surprisingly filling."
+        ),
+        "price_php": 135.0,
+        "municipality": "Malay",
+        "image_url": "/static/img/tortang-talong.jpg",
+        "ingredients": "Eggplant, egg, onion, garlic, salt, pepper",
+        "cooking_notes": "Char the eggplant until the skin blisters, peel, flatten, then dip in beaten egg and pan-fry.",
+        "allergens": "Egg",
+        "prep_minutes": 20,
+        "stock_qty": 16,
+        "is_signature": 0,
+    },
+    {
+        "name": "Tinapang Bangus",
+        "category": "Breakfast",
+        "description": (
+            "Bamboo-smoked milkfish with a deep amber colour, served with "
+            "garlic rice and egg."
+        ),
+        "price_php": 175.0,
+        "municipality": "Ibajay",
+        "image_url": "/static/img/tinapang-bangus.jpg",
+        "ingredients": "Milkfish, bamboo smoke, salt, rice, egg, calamansi",
+        "cooking_notes": "Smoke the fish slowly over bamboo until the flesh sets, then pan-fry briefly before serving.",
+        "allergens": "Fish; egg",
+        "prep_minutes": 20,
+        "stock_qty": 12,
+        "is_signature": 0,
+    },
+    {
+        "name": "Bibingka",
+        "category": "Breakfast",
+        "description": (
+            "Soft rice cake baked in a banana leaf, brushed with butter and "
+            "topped with salted egg and cheese."
+        ),
+        "price_php": 125.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/bibingka.jpg",
+        "ingredients": "Rice flour, coconut milk, egg, sugar, salted egg, cheese, banana leaf",
+        "cooking_notes": "Line the pan with banana leaf, pour the batter, and bake until the top is set and lightly browned.",
+        "allergens": "Egg; coconut; milk",
+        "prep_minutes": 30,
+        "stock_qty": 20,
+        "is_signature": 0,
+    },
+    # ------------------------------------------------------------------- Lunch
+    {
+        "name": "Kare-Kare",
+        "category": "Lunch",
+        "description": (
+            "Oxtail and vegetables in a velvety peanut sauce, served the "
+            "proper way with bagoong."
+        ),
+        "price_php": 345.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/kare-kare.jpg",
+        "ingredients": "Oxtail, ground peanuts, annatto, eggplant, sitaw, banana heart, bagoong",
+        "cooking_notes": "Simmer the oxtail until tender, then finish with peanut sauce and vegetables; serve bagoong on the side.",
+        "allergens": "Peanuts; crustacean/shrimp (bagoong)",
+        "prep_minutes": 60,
+        "stock_qty": 10,
+        "is_signature": 1,
+    },
+    {
+        "name": "Lechon Kawali",
+        "category": "Lunch",
+        "description": (
+            "Pork belly boiled until tender then fried hard until the skin "
+            "crackles, with lechon dipping sauce."
+        ),
+        "price_php": 295.0,
+        "municipality": "Banga",
+        "image_url": "/static/img/lechon-kawali.jpg",
+        "ingredients": "Pork belly, garlic, bay leaf, peppercorn, salt, soy sauce, lechon sauce",
+        "cooking_notes": "Boil, dry the skin completely, then fry in hot oil until it blisters and crackles.",
+        "allergens": "Pork; soy; gluten",
+        "prep_minutes": 45,
+        "stock_qty": 14,
+        "is_signature": 0,
+    },
+    {
+        "name": "Pinakbet",
+        "category": "Lunch",
+        "description": (
+            "Ilocano-style mixed vegetables simmered with shrimp bagoong — "
+            "savoury, earthy and honest."
+        ),
+        "price_php": 215.0,
+        "municipality": "Numancia",
+        "image_url": "/static/img/pinakbet.jpg",
+        "ingredients": "Squash, eggplant, okra, sitaw, tomato, onion, shrimp bagoong",
+        "cooking_notes": "Sauté the bagoong first, add the harder vegetables, then finish with the softer ones.",
+        "allergens": "Crustacean/shrimp (bagoong)",
+        "prep_minutes": 25,
+        "stock_qty": 18,
+        "is_signature": 0,
+    },
+    {
+        "name": "Sisig",
+        "category": "Lunch",
+        "description": (
+            "Sizzling chopped pork with onion, chili and calamansi — loud, "
+            "sharp and made for sharing."
+        ),
+        "price_php": 285.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/sisig.jpg",
+        "ingredients": "Pork cheek, onion, garlic, chili, mayonnaise, calamansi, soy sauce",
+        "cooking_notes": "Boil and grill the pork first for smokiness, then chop, season and serve on a hot plate.",
+        "allergens": "Egg (mayonnaise); soy",
+        "prep_minutes": 30,
+        "stock_qty": 12,
+        "is_signature": 1,
+    },
+    {
+        "name": "Pancit Bihon",
+        "category": "Lunch",
+        "description": (
+            "Fine rice noodles tossed with chicken, shrimp and garden "
+            "vegetables — a fiesta-table staple."
+        ),
+        "price_php": 235.0,
+        "municipality": "Malay",
+        "image_url": "/static/img/pancit-bihon.jpg",
+        "ingredients": "Rice noodles, chicken, shrimp, cabbage, carrot, onion, soy sauce, calamansi",
+        "cooking_notes": "Soften the noodles first, then stir-fry with the aromatics and add stock so they finish silky.",
+        "allergens": "Crustacean shellfish; soy; gluten",
+        "prep_minutes": 30,
+        "stock_qty": 20,
+        "is_signature": 0,
+    },
+    # ------------------------------------------------------------------ Dinner
+    {
+        "name": "Chicken Inasal",
+        "category": "Dinner",
+        "description": (
+            "Native chicken grilled over coals with annatto, lemongrass and "
+            "garlic — smoky, juicy and golden."
+        ),
+        "price_php": 275.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/chicken-inasal.jpg",
+        "ingredients": "Native chicken, annatto, lemongrass, garlic, cane vinegar, soy sauce, oil",
+        "cooking_notes": "Marinate overnight, baste with annatto oil while grilling, and rest before carving.",
+        "allergens": "Soy",
+        "prep_minutes": 35,
+        "stock_qty": 16,
+        "is_signature": 1,
+    },
+    {
+        "name": "Pork Barbecue",
+        "category": "Dinner",
+        "description": (
+            "Pork skewers marinated in vinegar, soy and garlic, grilled until "
+            "the edges char and caramelise."
+        ),
+        "price_php": 195.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/pork-barbecue.jpg",
+        "ingredients": "Pork, cane vinegar, soy sauce, garlic, sugar, banana ketchup, bamboo skewers",
+        "cooking_notes": "Marinate overnight and grill close to the coals, turning often and basting with the marinade.",
+        "allergens": "Soy; gluten",
+        "prep_minutes": 30,
+        "stock_qty": 25,
+        "is_signature": 0,
+    },
+    {
+        "name": "Inihaw na Bangus",
+        "category": "Dinner",
+        "description": (
+            "Whole milkfish stuffed with lemongrass and salt, grilled until "
+            "the skin is smoky and crisp."
+        ),
+        "price_php": 265.0,
+        "municipality": "Ibajay",
+        "image_url": "/static/img/inihaw-na-bangus.jpg",
+        "ingredients": "Milkfish, lemongrass, salt, tomato, onion, soy-vinegar dip",
+        "cooking_notes": "Stuff the cavity with herbs, salt the skin, and grill over medium coals so it cooks through.",
+        "allergens": "Fish; soy",
+        "prep_minutes": 30,
+        "stock_qty": 12,
+        "is_signature": 0,
+    },
+    {
+        "name": "Bulalo",
+        "category": "Dinner",
+        "description": (
+            "Beef shank simmered for hours until the marrow is soft, with "
+            "corn, cabbage and a clear, sweet broth."
+        ),
+        "price_php": 395.0,
+        "municipality": "Numancia",
+        "image_url": "/static/img/bulalo.jpg",
+        "ingredients": "Beef shank, marrow, corn, cabbage, lemongrass, onion, peppercorn",
+        "cooking_notes": "Skim the broth as it boils, then simmer low and slow until the shank gives way.",
+        "allergens": "None",
+        "prep_minutes": 90,
+        "stock_qty": 8,
+        "is_signature": 0,
+    },
+    {
+        "name": "Sinigang na Baboy",
+        "category": "Dinner",
+        "description": (
+            "Pork in tamarind broth with taro, radish and kangkong — sour, "
+            "warm and deeply comforting."
+        ),
+        "price_php": 285.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/sinigang-na-baboy.jpg",
+        "ingredients": "Pork belly, tamarind, taro, radish, kangkong, tomato, onion",
+        "cooking_notes": "Simmer the pork first, add the tamarind and root vegetables, and finish with the greens.",
+        "allergens": "None",
+        "prep_minutes": 40,
+        "stock_qty": 14,
+        "is_signature": 0,
+    },
+    {
+        "name": "Beef Nilaga",
+        "category": "Dinner",
+        "description": (
+            "Clear beef broth with taro, chayote, cabbage and carrots; simply "
+            "seasoned with peppercorn and onion."
+        ),
+        "price_php": 325.0,
+        "municipality": "Banga",
+        "image_url": "/static/img/beef-nilaga.jpg",
+        "ingredients": "Beef, taro, chayote, cabbage, carrot, onion, peppercorn, salt",
+        "cooking_notes": "Simmer the beef until tender, then add the vegetables in order of how long they take to cook.",
+        "allergens": "None",
+        "prep_minutes": 75,
+        "stock_qty": 10,
+        "is_signature": 0,
+    },
+    {
+        "name": "Kansi",
+        "category": "Dinner",
+        "description": (
+            "Western Visayas beef soup with shank, lemongrass and cane "
+            "vinegar — sour, hearty and slow-cooked."
+        ),
+        "price_php": 365.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/kansi.jpg",
+        "ingredients": "Beef shank, lemongrass, garlic, cane vinegar, sitaw, onion, peppercorn",
+        "cooking_notes": "Brown the shank, then simmer low with lemongrass and vinegar until the meat is fork-tender.",
+        "allergens": "None",
+        "prep_minutes": 90,
+        "stock_qty": 8,
+        "is_signature": 1,
+    },
+    # ------------------------------------------------------- Drinks & Desserts
+    {
+        "name": "Buko Pandan",
+        "category": "Drinks & Desserts",
+        "description": (
+            "Young coconut strips and pandan jelly folded into sweet cream — "
+            "cool, fragrant and purely Pinoy."
+        ),
+        "price_php": 115.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/buko-pandan.jpg",
+        "ingredients": "Young coconut, pandan jelly, cream, sugar, pandan extract",
+        "cooking_notes": "Chill the coconut and jelly first, then fold together with sweetened cream just before serving.",
+        "allergens": "Milk",
+        "prep_minutes": 15,
+        "stock_qty": 28,
+        "is_signature": 0,
+    },
+    {
+        "name": "Taho",
+        "category": "Drinks & Desserts",
+        "description": (
+            "Silken tofu in warm arnibal syrup with sago pearls — the "
+            "street-corner dessert many grew up with."
+        ),
+        "price_php": 85.0,
+        "municipality": "Kalibo",
+        "image_url": "/static/img/taho.jpg",
+        "ingredients": "Silken tofu, cane syrup (arnibal), sago pearls, vanilla",
+        "cooking_notes": "Warm the tofu gently, then ladle over syrup and pearls; never boil the tofu or it will break.",
+        "allergens": "Soy",
+        "prep_minutes": 10,
+        "stock_qty": 30,
+        "is_signature": 0,
+    },
 ]
 
 VIDEOS = [
