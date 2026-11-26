@@ -596,6 +596,36 @@ class EnterpriseIntegrationBus:
         return kitchen_ticket, rider_ticket
 
     # ---------------------------------------------------------------------
+    # Order-status notifications (Shopee-style live updates)
+    # ---------------------------------------------------------------------
+    def publish_status_event(
+        self, *, user_id: int, order: dict[str, Any], notification: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Log + broadcast an admin status change to the customer's SSE stream.
+
+        The event keeps the same envelope as every other bus event, so the
+        browser can handle ORDER_STATUS_UPDATED inside its existing listener.
+        """
+        return self._log(
+            user_id=user_id,
+            order_id=order["id"],
+            correlation_id=f"corr_notify_{uuid.uuid4().hex[:12]}",
+            pattern="Message Channel",
+            channel="channel.notifications.outbound",
+            event_type="ORDER_STATUS_UPDATED",
+            status="error" if notification["status"] == "Cancelled" else "success",
+            title=notification["title"],
+            detail=notification["message"],
+            payload={
+                "order_id": order["id"],
+                "order_reference": order["reference"],
+                "status": notification["status"],
+                "previous_status": notification.get("previous_status", ""),
+                "notification": notification,
+            },
+        )
+
+    # ---------------------------------------------------------------------
     # Read helpers for HTTP endpoints
     # ---------------------------------------------------------------------
     def recent_logs(self, user_id: int, limit: int = 40) -> list[dict[str, Any]]:

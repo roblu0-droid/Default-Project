@@ -20,6 +20,8 @@
     municipality: "All",
     logIds: new Set(),
     orders: [],
+    notifications: [],
+    unreadCount: 0,
     lastOrderId: null,
     stream: null,
     streamRetry: null,
@@ -759,9 +761,20 @@
   /* ------------------------------------------------------------------ */
   function statusClass(status) {
     const value = String(status || "").toLowerCase();
-    if (value.includes("review")) return "status-needs-review";
-    if (value.includes("deliver")) return "status-delivered";
+    if (value.includes("cancel") || value.includes("review")) return "status-needs-review";
+    if (value.includes("out for delivery")) return "status-out";
+    if (value.includes("delivered")) return "status-delivered";
+    if (value.includes("ready")) return "status-ready";
     return "status-preparing";
+  }
+
+  function statusHint(status) {
+    const value = String(status || "").toLowerCase();
+    if (value.includes("out for delivery")) return "rider on the way";
+    if (value.includes("delivered")) return "delivered to your door";
+    if (value.includes("ready")) return "packed and waiting for the rider";
+    if (value.includes("cancel") || value.includes("review")) return "needs attention";
+    return "in the kitchen";
   }
 
   function orderItemsSummary(items) {
@@ -799,7 +812,7 @@
           "</div>" +
           '<div class="order-card-footer"><span class="order-eta">' +
           '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>' +
-          esc(order.payment_method) + " · " + esc(order.status === "Needs review" ? "ops review" : "in the kitchen") +
+          esc(order.payment_method) + " · " + esc(statusHint(order.status)) +
           "</span>" +
           '<div class="order-actions">' +
           '<button class="outline-button small" type="button" data-order-trace="' + order.id + '">EIP trace</button>' +
@@ -824,6 +837,115 @@
           '</p><button type="button" class="text-button" id="retryOrdersButton">Try again</button></div>';
       }
     }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Order notifications — Shopee-style live status updates               */
+  /* ------------------------------------------------------------------ */
+  function notificationIcon(status) {
+    const value = String(status || "").toLowerCase();
+    if (value.includes("delivered")) return "✓";
+    if (value.includes("out for delivery")) return "🛺";
+    if (value.includes("ready")) return "✦";
+    if (value.includes("cancel")) return "!";
+    return "♨";
+  }
+
+  function renderNotifications() {
+    const count = $("#notificationCount");
+    if (count) {
+      count.textContent = state.unreadCount > 9 ? "9+" : String(state.unreadCount);
+      count.hidden = state.unreadCount === 0;
+    }
+    const list = $("#notificationList");
+    if (!list) return;
+    if (!state.notifications.length) {
+      list.innerHTML = '<div class="notification-empty">No updates yet. Your order progress will appear here.</div>';
+      return;
+    }
+    list.innerHTML = state.notifications
+      .map((notice) => {
+        const unread = !notice.is_read;
+        return (
+          '<button type="button" class="notification-item' + (unread ? " is-unread" : "") +
+          '" data-notification-id="' + notice.id + '" data-order-id="' + (notice.order_id || "") + '">' +
+          '<span class="notification-icon ' + statusClass(notice.status) + '">' +
+          notificationIcon(notice.status) + "</span>" +
+          '<span class="notification-copy"><strong>' + esc(notice.title) + "</strong>" +
+          "<span>" + esc(notice.message) + "</span>" +
+          "<small>" + esc(formatDateTime(notice.created_at)) +
+          (notice.order_reference ? " · " + esc(notice.order_reference) : "") +
+          "</small></span>" +
+          (unread ? '<span class="notification-dot"></span>' : "") +
+          "</button>"
+        );
+      })
+      .join("");
+  }
+
+  async function loadNotifications() {
+    try {
+      const payload = await api("/api/notifications");
+      state.notifications = payload.notifications || [];
+      state.unreadCount = Number(payload.unread_count) || 0;
+      renderNotifications();
+    } catch (error) {
+      /* Keep the last known list if the network is briefly unavailable. */
+    }
+  }
+
+  async function markNotificationRead(id) {
+    try {
+      await api("/api/notifications/" + id + "/read", { method: "PATCH" });
+      const notice = state.notifications.find((item) => item.id === id);
+      if (notice && !notice.is_read) {
+        notice.is_read = true;
+        state.unreadCount = Math.max(0, state.unreadCount - 1);
+        renderNotifications();
+      }
+    } catch (error) {
+      /* Non-critical: the next refresh will resync the unread count. */
+    }
+  }
+
+  async function markAllNotificationsRead() {
+    try {
+      await api("/api/notifications/read-all", { method: "POST" });
+      state.notifications.forEach((notice) => { notice.is_read = true; });
+      state.unreadCount = 0;
+      renderNotifications();
+      toast("All caught up", "Order updates marked as read.", "success");
+    } catch (error) {
+      toast("Could not update", error.message, "error");
+    }
+  }
+
+  function closeNotificationPanel() {
+    const panel = $("#notificationPanel");
+    const button = $("#notificationButton");
+    if (panel) panel.hidden = true;
+    if (button) button.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleNotificationPanel() {
+    const panel = $("#notificationPanel");
+    const button = $("#notificationButton");
+    if (!panel) return;
+    const willOpen = panel.hidden;
+    panel.hidden = !willOpen;
+    if (button) button.setAttribute("aria-expanded", String(willOpen));
+    if (willOpen) {
+      closeUserMenu();
+      loadNotifications();
+    }
+  }
+
+  function handleStatusEvent(log) {
+    const notice = log && log.payload && log.payload.notification;
+    if (!notice) return;
+    toast(notice.title, notice.message, "success");
+    loadNotifications();
+    loadOrders();
   }
 
   function logEntryMarkup(log) {
@@ -998,6 +1120,7 @@
       try {
         const log = JSON.parse(event.data);
         appendLog(log);
+        if (log && log.event_type === "ORDER_STATUS_UPDATED") handleStatusEvent(log);
       } catch (error) {
         /* ignore malformed frames */
       }
@@ -1313,8 +1436,32 @@
       userButton.setAttribute("aria-expanded", String(willOpen));
     });
 
+  const notificationButton = $("#notificationButton");
+  notificationButton &&
+    notificationButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleNotificationPanel();
+    });
+
+  const notificationList = $("#notificationList");
+  notificationList &&
+    notificationList.addEventListener("click", async (event) => {
+      const item = event.target.closest("[data-notification-id]");
+      if (!item) return;
+      const id = Number(item.dataset.notificationId);
+      const orderId = Number(item.dataset.orderId);
+      closeNotificationPanel();
+      await markNotificationRead(id);
+      if (orderId) openOrderModal(orderId);
+      else sectionForScroll("orders");
+    });
+
+  $("#markAllReadButton") &&
+    $("#markAllReadButton").addEventListener("click", markAllNotificationsRead);
+
   document.addEventListener("click", (event) => {
     if (!event.target.closest(".user-wrap")) closeUserMenu();
+    if (!event.target.closest(".notification-wrap")) closeNotificationPanel();
     if (!event.target.closest(".mobile-nav") && !event.target.closest("#mobileMenuButton")) closeMobileNav();
   });
 
@@ -1408,6 +1555,7 @@
     if (checkout && !checkout.hidden) return closeCheckout();
     if (cartDrawer && cartDrawer.classList.contains("is-open")) return closeCart();
     closeUserMenu();
+    closeNotificationPanel();
     closeMobileNav();
   });
 
@@ -1438,8 +1586,11 @@
     renderCart();
     await loadZones();
     loadOrders();
+    loadNotifications();
     loadIntegrationLogs();
     connectStream();
+    // Fallback refresh in case an SSE connection is interrupted.
+    window.setInterval(loadNotifications, 30000);
   }
 
   boot();

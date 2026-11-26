@@ -68,12 +68,33 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6.5 7.5 11 16M17.5 7.5 13 16"/></svg>
         <span>Integration</span>
       </a>
+      {% if user.is_admin %}
+      <a class="app-nav-link admin-nav-link" href="/admin">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2"/></svg>
+        <span>Admin</span>
+      </a>
+      {% endif %}
     </nav>
 
     <div class="app-header-actions">
       <div class="delivery-chip">
         <span class="delivery-pulse"></span>
         <span>Delivering to <strong id="headerMunicipality">{{ user.municipality }}</strong></span>
+      </div>
+      <div class="notification-wrap">
+        <button class="icon-button notification-button" id="notificationButton" type="button" aria-label="Open order notifications" aria-expanded="false" aria-controls="notificationPanel">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
+          <span class="notification-count" id="notificationCount" hidden>0</span>
+        </button>
+        <div class="notification-panel" id="notificationPanel" hidden>
+          <div class="notification-panel-head">
+            <div><strong>Order updates</strong><span>Live from the kitchen</span></div>
+            <button type="button" id="markAllReadButton">Mark all read</button>
+          </div>
+          <div class="notification-list" id="notificationList">
+            <div class="notification-empty">No updates yet. Your order progress will appear here.</div>
+          </div>
+        </div>
       </div>
       <button class="icon-button cart-button" id="cartButton" type="button" aria-label="Open cart">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h2l2.2 10.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 8H7"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
@@ -90,6 +111,12 @@
             <span class="user-avatar large">{{ user.full_name[:1] | upper }}</span>
             <div><strong>{{ user.full_name }}</strong><span>{{ user.email }}</span></div>
           </div>
+          {% if user.is_admin %}
+          <a class="user-menu-item" href="/admin">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2"/></svg>
+            Admin console
+          </a>
+          {% endif %}
           <button type="button" class="user-menu-item" id="profileButton">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
             Change municipality
@@ -112,6 +139,9 @@
     <a href="#orders" data-mobile-link>My orders</a>
     <a href="#culture" data-mobile-link>Culture</a>
     <a href="#integration" data-mobile-link>Integration</a>
+    {% if user.is_admin %}
+    <a href="/admin" data-mobile-link>Admin console</a>
+    {% endif %}
     <button type="button" id="mobileLogoutButton">Sign out</button>
   </div>
 
@@ -148,7 +178,7 @@
           <div class="hero-mini-card">
             <span class="mini-card-icon">✦</span>
             <div><strong>House favorite</strong><span>Binakoe nga Manok</span></div>
-            <span class="mini-price">₱320</span>
+            <span class="mini-price">₱130</span>
           </div>
           <div class="hero-festival-badge">
             <span>HALA</span><strong>BIRA!</strong>
@@ -597,8 +627,8 @@
       <p>Hatod Akean is a full-stack demo for Aklanon cuisine. Orders are saved in SQLite and passed through a live Enterprise Integration Pattern event bus.</p>
       <div class="help-grid">
         <div><span class="help-number">01</span><strong>Ordering</strong><p>Choose dishes, add them to your bag, then set your Aklan delivery zone at checkout.</p></div>
-        <div><span class="help-number">02</span><strong>Tracking</strong><p>Open My Orders to see your current status and the exact EIP messages generated for your order.</p></div>
-        <div><span class="help-number">03</span><strong>Demo filter</strong><p>Use “Simulate dead letter” in Integration to send an out-of-zone order into the error queue.</p></div>
+        <div><span class="help-number">02</span><strong>Tracking</strong><p>Open the bell on your dashboard for live order updates — preparing, ready, on the way, and delivered.</p></div>
+        <div><span class="help-number">03</span><strong>Notifications</strong><p>Every status change from the kitchen appears instantly here, just like your favorite delivery app.</p></div>
       </div>
       <div class="help-contact"><span>Demo support</span><a href="mailto:hello@hatodakean.ph">hello@hatodakean.ph</a></div>
     </div>

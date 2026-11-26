@@ -14,6 +14,9 @@ from .database import get_connection
 
 PBKDF2_ITERATIONS = 310_000
 
+# Columns safe to expose to the browser (never includes password_hash).
+USER_FIELDS = "id, full_name, email, municipality, created_at, is_admin"
+
 
 def hash_password(password: str) -> str:
     salt = secrets.token_bytes(16)
@@ -47,6 +50,7 @@ def public_user(row: Any) -> dict[str, Any] | None:
         "email": row["email"],
         "municipality": row["municipality"],
         "created_at": row["created_at"],
+        "is_admin": bool(row["is_admin"]) if "is_admin" in row.keys() else False,
     }
 
 
@@ -56,7 +60,7 @@ def current_user(request: Request) -> dict[str, Any] | None:
         return None
     with get_connection() as conn:
         row = conn.execute(
-            "SELECT id, full_name, email, municipality, created_at FROM users WHERE id = ?",
+            f"SELECT {USER_FIELDS} FROM users WHERE id = ?",
             (user_id,),
         ).fetchone()
     if row is None:
@@ -71,6 +75,16 @@ def require_user(request: Request) -> dict[str, Any]:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Please sign in to continue.",
+        )
+    return user
+
+
+def require_admin(request: Request) -> dict[str, Any]:
+    user = require_user(request)
+    if not user.get("is_admin"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="This area is for the Hatod Akean admin only.",
         )
     return user
 

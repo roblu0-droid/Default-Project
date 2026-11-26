@@ -1845,6 +1845,154 @@
   .app-footer { padding: 20px 12px 26px; }
 }
 
+/* ---------- Order notifications (Shopee-style live updates) ---------- */
+.notification-wrap {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.notification-button { position: relative; }
+
+.notification-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--accent-gradient);
+  color: #fff;
+  font-size: 0.58rem;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(88, 15, 40, 0.28);
+}
+
+.notification-panel {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: -8px;
+  z-index: 80;
+  width: min(390px, calc(100vw - 28px));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--paper);
+  box-shadow: var(--shadow-float);
+  overflow: hidden;
+  animation: noticeIn 0.22s var(--ease);
+}
+
+@keyframes noticeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.notification-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 15px 17px 12px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(100deg, rgba(238, 98, 0, 0.07), rgba(255, 154, 0, 0.05));
+}
+
+.notification-panel-head strong {
+  display: block;
+  color: var(--burgundy);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+}
+
+.notification-panel-head span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.63rem;
+}
+
+.notification-panel-head button {
+  border: 0;
+  background: none;
+  color: var(--ember);
+  font: inherit;
+  font-size: 0.66rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notification-panel-head button:hover { text-decoration: underline; }
+
+.notification-list {
+  max-height: 390px;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.notification-empty {
+  padding: 34px 18px;
+  color: var(--muted);
+  font-size: 0.74rem;
+  text-align: center;
+}
+
+.notification-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  width: 100%;
+  padding: 12px 13px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.18s var(--ease);
+}
+
+.notification-item:hover { background: rgba(255, 154, 0, 0.09); }
+.notification-item.is-unread { background: rgba(255, 154, 0, 0.07); }
+
+.notification-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: rgba(255, 154, 0, 0.15);
+  color: #a76100;
+  font-size: 0.95rem;
+}
+
+.notification-icon.status-ready { background: rgba(88, 15, 40, 0.1); color: var(--burgundy-soft); }
+.notification-icon.status-out { background: rgba(238, 98, 0, 0.14); color: var(--ember); }
+.notification-icon.status-delivered { background: rgba(31, 122, 90, 0.13); color: var(--success); }
+.notification-icon.status-needs-review { background: rgba(176, 35, 61, 0.11); color: var(--danger); }
+
+.notification-copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.notification-copy strong { color: var(--ink); font-size: 0.76rem; }
+.notification-copy > span { color: var(--muted); font-size: 0.69rem; line-height: 1.45; }
+.notification-copy small { color: var(--muted-soft); font-size: 0.61rem; }
+
+.notification-dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  margin-top: 6px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--ember);
+}
+
+.status-ready { background: rgba(88, 15, 40, 0.1); color: var(--burgundy-soft); }
+.status-out { background: rgba(238, 98, 0, 0.14); color: var(--ember); }
+
 /* ==========================================================================
    Hide the system-integration demo from the customer-facing app.
    Remove this block to bring the live trace and pattern cards back.

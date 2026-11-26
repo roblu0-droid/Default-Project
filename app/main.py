@@ -25,9 +25,11 @@ from pydantic import BaseModel, Field
 from starlette.middleware.sessions import SessionMiddleware
 
 from .auth import (
+    USER_FIELDS,
     current_user,
     hash_password,
     public_user,
+    require_admin,
     require_user,
     session_secret,
     verify_password,
@@ -35,13 +37,39 @@ from .auth import (
 from .catalog import CATEGORIES, DELIVERY_ZONES, MENU_SEED, MUNICIPALITIES, VIDEOS
 from .database import get_connection, init_db
 from .eip import integration_bus
-from .seed import DEMO_EMAIL, DEMO_PASSWORD, seed_database
+from .seed import ADMIN_EMAIL, ADMIN_PASSWORD, DEMO_EMAIL, DEMO_PASSWORD, seed_database
 
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
 TEMPLATE_DIR = BASE_DIR / "templates"
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 PHONE_RE = re.compile(r"^[0-9+\-\s()]{7,20}$")
+
+ORDER_STATUSES = ("Preparing", "Ready", "Out for delivery", "Delivered", "Cancelled")
+
+# Shopee-style customer copy for every admin status change.
+STATUS_UPDATES = {
+    "Preparing": (
+        "Your order is being prepared 🍳",
+        "The kitchen has started cooking your hatod. We'll update you at every step.",
+    ),
+    "Ready": (
+        "Your order is ready! 🍽️",
+        "Your food is packed and waiting for the rider at the partner hub.",
+    ),
+    "Out for delivery": (
+        "Your hatod is on the way! 🛺",
+        "A rider has picked up your order and is heading to your address.",
+    ),
+    "Delivered": (
+        "Delivered — enjoy! 🎉",
+        "Your order has arrived. Salamat sa pag-order sa Hatod Akean!",
+    ),
+    "Cancelled": (
+        "Order cancelled",
+        "Your order was cancelled. Contact support if you need help.",
+    ),
+}
 
 
 @asynccontextmanager
@@ -116,6 +144,10 @@ class OrderIn(BaseModel):
     notes: str = Field(default="", max_length=300)
 
 
+class StatusIn(BaseModel):
+    status: Literal["Preparing", "Ready", "Out for delivery", "Delivered", "Cancelled"]
+
+
 # ---------------------------------------------------------------------------
 # Presentation routes
 # ---------------------------------------------------------------------------
@@ -151,6 +183,19 @@ async def application_page(request: Request):
             "menu_count": len(MENU_SEED),
             "videos": VIDEOS,
             "demo_mode": os.getenv("DEMO_MODE", "1") == "1",
+        },
+    )
+
+
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_page(request: Request, user: dict = Depends(require_admin)):
+    return templates.TemplateResponse(
+        request,
+        "admin.html",
+        {
+            "user": user,
+            "user_json": json.dumps(user, ensure_ascii=False),
+            "statuses": ORDER_STATUSES,
         },
     )
 
@@ -199,7 +244,7 @@ async def register(payload: RegisterIn, request: Request):
             )
             user_id = cursor.lastrowid
             row = conn.execute(
-                "SELECT id, full_name, email, municipality, created_at FROM users WHERE id = ?",
+                f"SELECT {USER_FIELDS} FROM users WHERE id = ?",
                 (user_id,),
             ).fetchone()
     except sqlite3.IntegrityError:
@@ -244,7 +289,7 @@ async def update_me(payload: ProfileIn, user: dict = Depends(require_user)):
             (payload.municipality, user["id"]),
         )
         row = conn.execute(
-            "SELECT id, full_name, email, municipality, created_at FROM users WHERE id = ?",
+            f"SELECT {USER_FIELDS} FROM users WHERE id = ?",
             (user["id"],),
         ).fetchone()
     return {"message": "Delivery municipality updated.", "user": public_user(row)}
@@ -330,6 +375,8 @@ def _serialize_order(row, items) -> dict:
     return {
         "id": row["id"],
         "reference": row["reference"],
+        "customer_id": row["customer_id"],
+        "customer_email": row["customer_email"] if "customer_email" in row.keys() else None,
         "customer_name": row["customer_name"],
         "delivery_address": row["delivery_address"],
         "barangay": row["barangay"],
@@ -508,6 +555,175 @@ async def get_order(order_id: int, user: dict = Depends(require_user)):
         raise HTTPException(status_code=404, detail="Order not found.")
     order["integration_logs"] = integration_bus.logs_for_order(user["id"], order_id)
     return {"order": order}
+
+
+# ---------------------------------------------------------------------------
+# Admin API — master view of every customer order
+# ---------------------------------------------------------------------------
+def _all_orders(limit: int = 100) -> list[dict]:
+    with get_connection() as conn:
+        rows = conn.execute(
+            """
+            SELECT o.*, u.email AS customer_email
+              FROM orders o
+              JOIN users u ON u.id = o.customer_id
+             ORDER BY o.id DESC
+             LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+        orders = []
+        for row in rows:
+            items = conn.execute(
+                "SELECT * FROM order_items WHERE order_id = ? ORDER BY id",
+                (row["id"],),
+            ).fetchall()
+            orders.append(_serialize_order(row, items))
+    return orders
+
+
+@app.get("/api/admin/orders")
+async def admin_list_orders(admin: dict = Depends(require_admin)):
+    orders = _all_orders()
+    return {
+        "orders": orders,
+        "statuses": ORDER_STATUSES,
+        "counts": {
+            status: sum(1 for order in orders if order["status"] == status)
+            for status in ORDER_STATUSES
+        },
+        "total_revenue_php": round(sum(order["total_php"] for order in orders), 2),
+    }
+
+
+@app.patch("/api/admin/orders/{order_id}/status")
+async def admin_update_status(
+    order_id: int, payload: StatusIn, admin: dict = Depends(require_admin)
+):
+    with get_connection() as conn:
+        row = conn.execute(
+            """
+            SELECT o.*, u.email AS customer_email
+              FROM orders o
+              JOIN users u ON u.id = o.customer_id
+             WHERE o.id = ?
+            """,
+            (order_id,),
+        ).fetchone()
+        if row is None:
+            raise HTTPException(status_code=404, detail="Order not found.")
+        if row["status"] == payload.status:
+            raise HTTPException(
+                status_code=422, detail=f"This order is already {payload.status}."
+            )
+
+        previous_status = row["status"]
+        title, message = STATUS_UPDATES[payload.status]
+        conn.execute(
+            "UPDATE orders SET status = ? WHERE id = ?", (payload.status, order_id)
+        )
+        cursor = conn.execute(
+            """
+            INSERT INTO notifications (
+                user_id, order_id, title, message, status, previous_status
+            ) VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                row["customer_id"],
+                order_id,
+                title,
+                message,
+                payload.status,
+                previous_status,
+            ),
+        )
+        notification_id = cursor.lastrowid
+        notification_row = conn.execute(
+            """
+            SELECT n.*, o.reference AS order_reference
+              FROM notifications n
+              JOIN orders o ON o.id = n.order_id
+             WHERE n.id = ?
+            """,
+            (notification_id,),
+        ).fetchone()
+        items = conn.execute(
+            "SELECT * FROM order_items WHERE order_id = ? ORDER BY id", (order_id,)
+        ).fetchall()
+        order = _serialize_order(row, items)
+
+    order["status"] = payload.status
+    notification = _serialize_notification(notification_row)
+    # Shopee-style live delivery: the customer's open page hears this instantly.
+    integration_bus.publish_status_event(
+        user_id=row["customer_id"], order=order, notification=notification
+    )
+    return {"order": order, "notification": notification}
+
+
+# ---------------------------------------------------------------------------
+# Customer notifications
+# ---------------------------------------------------------------------------
+def _serialize_notification(row) -> dict:
+    return {
+        "id": row["id"],
+        "order_id": row["order_id"],
+        "order_reference": row["order_reference"] if "order_reference" in row.keys() else None,
+        "title": row["title"],
+        "message": row["message"],
+        "status": row["status"],
+        "previous_status": row["previous_status"],
+        "is_read": bool(row["is_read"]),
+        "created_at": row["created_at"],
+    }
+
+
+@app.get("/api/notifications")
+async def list_notifications(user: dict = Depends(require_user)):
+    with get_connection() as conn:
+        rows = conn.execute(
+            """
+            SELECT n.*, o.reference AS order_reference
+              FROM notifications n
+              LEFT JOIN orders o ON o.id = n.order_id
+             WHERE n.user_id = ?
+             ORDER BY n.id DESC
+             LIMIT 30
+            """,
+            (user["id"],),
+        ).fetchall()
+        unread = conn.execute(
+            "SELECT COUNT(*) AS c FROM notifications WHERE user_id = ? AND is_read = 0",
+            (user["id"],),
+        ).fetchone()["c"]
+    return {
+        "notifications": [_serialize_notification(row) for row in rows],
+        "unread_count": unread,
+    }
+
+
+@app.patch("/api/notifications/{notification_id}/read")
+async def read_notification(notification_id: int, user: dict = Depends(require_user)):
+    with get_connection() as conn:
+        row = conn.execute(
+            "SELECT id FROM notifications WHERE id = ? AND user_id = ?",
+            (notification_id, user["id"]),
+        ).fetchone()
+        if row is None:
+            raise HTTPException(status_code=404, detail="Notification not found.")
+        conn.execute(
+            "UPDATE notifications SET is_read = 1 WHERE id = ?", (notification_id,)
+        )
+    return {"message": "Order update marked as read."}
+
+
+@app.post("/api/notifications/read-all")
+async def read_all_notifications(user: dict = Depends(require_user)):
+    with get_connection() as conn:
+        conn.execute(
+            "UPDATE notifications SET is_read = 1 WHERE user_id = ?", (user["id"],)
+        )
+    return {"message": "All order updates marked as read."}
 
 
 # ---------------------------------------------------------------------------

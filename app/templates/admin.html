@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#580F28">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Hatod Akean — Admin Console</title>
+  <link rel="icon" href="{{ url_for('static', path='img/LOGO_HATOD_AKLAN.png') }}" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/app.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/admin.css') }}">
+</head>
+<body class="admin-body">
+  <header class="admin-header">
+    <a class="brand" href="/app" aria-label="Back to Hatod Akean">
+      <img class="brand-mark" src="{{ url_for('static', path='img/LOGO_HATOD_AKLAN.png') }}" alt="Hatod Akean emblem">
+      <span class="brand-copy"><strong>HATOD AKEAN</strong><em>Aklanon's Famous Cuisine</em></span>
+    </a>
+    <span class="admin-tag">ADMIN CONSOLE</span>
+    <div class="admin-header-actions">
+      <a class="admin-back" href="/app">← Customer view</a>
+      <button class="admin-signout" type="button" id="adminLogoutButton">Sign out</button>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <section class="admin-intro">
+      <div>
+        <span class="section-kicker">Master control</span>
+        <h1>All orders, <em>one place.</em></h1>
+        <p>Update a customer's order status and they get a live notification instantly — preparing, ready, out for delivery, delivered.</p>
+      </div>
+      <div class="admin-who">
+        <span class="admin-avatar">{{ user.full_name[:1] | upper }}</span>
+        <div><strong>{{ user.full_name }}</strong><span>{{ user.email }}</span></div>
+      </div>
+    </section>
+
+    <section class="admin-stats" id="adminStats" aria-label="Order summary">
+      <div class="admin-stat"><span>Total orders</span><strong id="statTotal">—</strong></div>
+      <div class="admin-stat"><span>Preparing</span><strong id="statPreparing">—</strong></div>
+      <div class="admin-stat"><span>Ready</span><strong id="statReady">—</strong></div>
+      <div class="admin-stat"><span>Out for delivery</span><strong id="statOut">—</strong></div>
+      <div class="admin-stat"><span>Delivered</span><strong id="statDelivered">—</strong></div>
+      <div class="admin-stat accent"><span>Total collected</span><strong id="statRevenue">—</strong></div>
+    </section>
+
+    <section class="admin-panel">
+      <div class="admin-panel-head">
+        <div>
+          <span class="section-kicker">Live queue</span>
+          <h2>Customer orders</h2>
+        </div>
+        <button class="admin-refresh" type="button" id="refreshOrdersButton">↻ Refresh</button>
+      </div>
+      <div class="admin-filters" id="adminFilters" role="group" aria-label="Filter orders by status"></div>
+      <div class="admin-table-wrap" id="adminTable">
+        <div class="admin-loading">Loading all customer orders…</div>
+      </div>
+    </section>
+
+    <p class="admin-footnote">Tip: use <strong>Auto progress</strong> on an order to walk it through every status — the customer sees a Shopee-style notification at each step.</p>
+  </main>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
+
+  <script>
+    window.HATOD = {
+      user: {{ user_json | safe }},
+      statuses: {{ statuses | tojson }}
+    };
+  </script>
+  <script src="{{ url_for('static', path='js/admin.js') }}"></script>
+</body>
+</html>
