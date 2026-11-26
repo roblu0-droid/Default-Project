@@ -288,7 +288,31 @@
     });
   }
 
+  // When a customer taps "Confirm delivered", their order moves to Delivered
+  // and this bus event reaches the admin console instantly.
+  function connectStream() {
+    if (!window.EventSource) return;
+    const stream = new EventSource("/api/integration/stream");
+    stream.addEventListener("integration", (event) => {
+      try {
+        const log = JSON.parse(event.data);
+        if (!log || log.event_type !== "ORDER_DELIVERY_CONFIRMED") return;
+        const payload = log.payload || {};
+        toast(
+          log.title || "Customer confirmed delivery",
+          (payload.customer || "A customer") + " confirmed " +
+            (payload.order_reference || "an order") + " was delivered.",
+          "success"
+        );
+        loadOrders(true);
+      } catch (error) {
+        /* ignore malformed frames */
+      }
+    });
+  }
+
   loadOrders();
+  connectStream();
   state.timer = window.setInterval(() => {
     if (state.busy.size === 0) loadOrders(true);
   }, 15000);

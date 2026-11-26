@@ -557,6 +557,61 @@ async def get_order(order_id: int, user: dict = Depends(require_user)):
     return {"order": order}
 
 
+@app.post("/api/orders/{order_id}/confirm-delivered")
+async def confirm_delivered(order_id: int, user: dict = Depends(require_user)):
+    """Customer confirms receipt; admins are notified live through the bus."""
+    with get_connection() as conn:
+        row = conn.execute(
+            "SELECT * FROM orders WHERE id = ? AND customer_id = ?",
+            (order_id, user["id"]),
+        ).fetchone()
+        if row is None:
+            raise HTTPException(status_code=404, detail="Order not found.")
+        if row["status"] != "Out for delivery":
+            raise HTTPException(
+                status_code=422,
+                detail="You can confirm delivery only while the order is out for delivery.",
+            )
+
+        title, message = STATUS_UPDATES["Delivered"]
+        conn.execute(
+            "UPDATE orders SET status = 'Delivered' WHERE id = ?", (order_id,)
+        )
+        cursor = conn.execute(
+            """
+            INSERT INTO notifications (
+                user_id, order_id, title, message, status, previous_status
+            ) VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (user["id"], order_id, title, message, "Delivered", row["status"]),
+        )
+        notification_row = conn.execute(
+            """
+            SELECT n.*, o.reference AS order_reference
+              FROM notifications n
+              JOIN orders o ON o.id = n.order_id
+             WHERE n.id = ?
+            """,
+            (cursor.lastrowid,),
+        ).fetchone()
+        items = conn.execute(
+            "SELECT * FROM order_items WHERE order_id = ? ORDER BY id", (order_id,)
+        ).fetchall()
+        order = _serialize_order(row, items)
+        admin_ids = [
+            admin["id"]
+            for admin in conn.execute("SELECT id FROM users WHERE is_admin = 1").fetchall()
+        ]
+
+    order["status"] = "Delivered"
+    notification = _serialize_notification(notification_row)
+    integration_bus.publish_status_event(
+        user_id=user["id"], order=order, notification=notification
+    )
+    integration_bus.publish_delivery_confirmation(order=order, admin_ids=admin_ids)
+    return {"order": order, "notification": notification}
+
+
 # ---------------------------------------------------------------------------
 # Admin API — master view of every customer order
 # ---------------------------------------------------------------------------

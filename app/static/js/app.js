@@ -815,6 +815,10 @@
           esc(order.payment_method) + " · " + esc(statusHint(order.status)) +
           "</span>" +
           '<div class="order-actions">' +
+          (order.status === "Out for delivery"
+            ? '<button class="confirm-delivered" type="button" data-confirm-delivered="' +
+              order.id + '"><span>Confirm delivered</span></button>'
+            : "") +
           '<button class="outline-button small" type="button" data-order-trace="' + order.id + '">EIP trace</button>' +
           '<button class="primary-cta small" type="button" data-order-view="' + order.id + '"><span>View order</span></button>' +
           "</div></div></article>"
@@ -836,6 +840,35 @@
           esc(error.message) +
           '</p><button type="button" class="text-button" id="retryOrdersButton">Try again</button></div>';
       }
+    }
+  }
+
+  async function confirmDelivered(orderId, button) {
+    if (button) button.disabled = true;
+    try {
+      const payload = await api("/api/orders/" + orderId + "/confirm-delivered", {
+        method: "POST",
+      });
+      const index = state.orders.findIndex((order) => order.id === orderId);
+      if (index >= 0) state.orders[index] = payload.order;
+      toast(
+        "Delivery confirmed",
+        "Thanks! The admin has been notified that your order arrived.",
+        "success"
+      );
+      renderOrders();
+      const modal = $("#orderModal");
+      const content = $("#orderDetailContent");
+      if (modal && content && !modal.hidden) {
+        content.innerHTML = orderDetailMarkup(payload.order);
+      }
+      loadNotifications();
+      return true;
+    } catch (error) {
+      toast("Could not confirm delivery", error.message, "error");
+      return false;
+    } finally {
+      if (button) button.disabled = false;
     }
   }
 
@@ -1006,6 +1039,10 @@
       "</div>" +
       '<div class="trace-mini"><h3>Integration trail</h3>' + trace + "</div>" +
       '<div class="detail-actions">' +
+      (order.status === "Out for delivery"
+        ? '<button class="confirm-delivered" type="button" data-confirm-delivered="' +
+          order.id + '"><span>Confirm delivered</span></button>'
+        : "") +
       '<button class="primary-cta small" type="button" data-reorder="' + order.id + '"><span>Re-order these dishes</span></button>' +
       '<button class="outline-button small" type="button" data-close-order>Close</button>' +
       "</div>"
@@ -1374,11 +1411,13 @@
 
   $("#ordersList") &&
     $("#ordersList").addEventListener("click", (event) => {
+      const confirm = event.target.closest("[data-confirm-delivered]");
       const view = event.target.closest("[data-order-view]");
       const trace = event.target.closest("[data-order-trace]");
       const browse = event.target.closest("[data-browse-menu]");
       const retry = event.target.closest("#retryOrdersButton");
-      if (view) openOrderModal(Number(view.dataset.orderView));
+      if (confirm) confirmDelivered(Number(confirm.dataset.confirmDelivered), confirm);
+      else if (view) openOrderModal(Number(view.dataset.orderView));
       else if (trace) openOrderModal(Number(trace.dataset.orderTrace), true);
       else if (browse) sectionForScroll("menu");
       else if (retry) loadOrders();
@@ -1389,6 +1428,11 @@
     $("#orderModal").addEventListener("click", (event) => {
       if (event.target === $("#orderModal")) closeOrderModal();
       if (event.target.closest("[data-close-order]")) closeOrderModal();
+      const confirm = event.target.closest("[data-confirm-delivered]");
+      if (confirm) {
+        confirmDelivered(Number(confirm.dataset.confirmDelivered), confirm);
+        return;
+      }
       const reorder = event.target.closest("[data-reorder]");
       if (reorder) {
         const order = state.orders.find((entry) => entry.id === Number(reorder.dataset.reorder));

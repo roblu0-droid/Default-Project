@@ -625,6 +625,33 @@ class EnterpriseIntegrationBus:
             },
         )
 
+    def publish_delivery_confirmation(
+        self, *, order: dict[str, Any], admin_ids: list[int]
+    ) -> None:
+        """Tell every admin, in real time, that a customer confirmed delivery."""
+        for admin_id in admin_ids:
+            self._log(
+                user_id=admin_id,
+                order_id=order["id"],
+                correlation_id=f"corr_confirm_{uuid.uuid4().hex[:12]}",
+                pattern="Message Channel",
+                channel="channel.notifications.admin",
+                event_type="ORDER_DELIVERY_CONFIRMED",
+                status="success",
+                title="Customer confirmed delivery",
+                detail=(
+                    f"{order['reference']} from {order['customer_name']} "
+                    f"was marked Delivered by the customer."
+                ),
+                payload={
+                    "order_id": order["id"],
+                    "order_reference": order["reference"],
+                    "customer": order["customer_name"],
+                    "total_php": order["total_php"],
+                    "status": "Delivered",
+                },
+            )
+
     # ---------------------------------------------------------------------
     # Read helpers for HTTP endpoints
     # ---------------------------------------------------------------------

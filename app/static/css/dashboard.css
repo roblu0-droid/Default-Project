@@ -1370,6 +1370,31 @@
   gap: 6px;
 }
 
+.confirm-delivered {
+  border: 1px solid rgba(31, 122, 90, 0.35);
+  border-radius: 9px;
+  padding: 8px 12px;
+  background: rgba(31, 122, 90, 0.1);
+  color: #1f7a5a;
+  font: inherit;
+  font-size: 0.66rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+.confirm-delivered:hover {
+  background: rgba(31, 122, 90, 0.18);
+  transform: translateY(-1px);
+}
+
+.confirm-delivered:disabled {
+  opacity: 0.5;
+  cursor: wait;
+  transform: none;
+}
+
 /* ---------- Culture ---------- */
 .culture-note {
   flex: 0 0 auto;
