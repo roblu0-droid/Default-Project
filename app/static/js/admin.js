@@ -164,7 +164,7 @@
           '<td><div class="admin-items">' + esc(itemText || "—") + "</div>" +
           '<span class="admin-sub">' + itemCount + " item" + (itemCount === 1 ? "" : "s") + "</span></td>" +
           '<td><div class="admin-address">' + esc(order.barangay) + ", " + esc(order.municipality) +
-          "</div><span class="admin-sub">' + esc(order.payment_method) + "</span></td>" +
+          '</div><span class="admin-sub">' + esc(order.payment_method) + "</span></td>" +
           '<td class="admin-total">' + money(order.total_php) + "</td>" +
           "<td>" + statusBadge(order.status) + "</td>" +
           '<td><div class="admin-actions">' +
@@ -179,8 +179,7 @@
           "</tr>"
         );
       }).join("") +
-      "</tbody></table>"
-    );
+      "</tbody></table>";
   }
 
   async function loadOrders(quiet = false) {
