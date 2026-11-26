@@ -192,6 +192,32 @@
 
 .admin-refresh:hover { border-color: var(--ember); color: var(--ember); }
 
+.admin-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-archive {
+  border: 1px solid rgba(31, 122, 90, 0.35);
+  border-radius: 10px;
+  background: rgba(31, 122, 90, 0.09);
+  color: #1f7a5a;
+  padding: 9px 14px;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-archive:hover {
+  border-color: var(--success);
+  background: rgba(31, 122, 90, 0.16);
+}
+
+.admin-archive:disabled { opacity: 0.5; cursor: wait; }
+
 .admin-filters {
   display: flex;
   flex-wrap: wrap;

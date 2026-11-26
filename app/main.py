@@ -622,6 +622,7 @@ def _all_orders(limit: int = 100) -> list[dict]:
             SELECT o.*, u.email AS customer_email
               FROM orders o
               JOIN users u ON u.id = o.customer_id
+             WHERE o.archived_at IS NULL
              ORDER BY o.id DESC
              LIMIT ?
             """,
@@ -648,6 +649,29 @@ async def admin_list_orders(admin: dict = Depends(require_admin)):
             for status in ORDER_STATUSES
         },
         "total_revenue_php": round(sum(order["total_php"] for order in orders), 2),
+    }
+
+
+@app.post("/api/admin/orders/archive-delivered")
+async def admin_archive_delivered(admin: dict = Depends(require_admin)):
+    """Clear Delivered orders from the admin queue; customer history stays."""
+    archived_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    with get_connection() as conn:
+        cursor = conn.execute(
+            """
+            UPDATE orders
+               SET archived_at = ?
+             WHERE status = 'Delivered' AND archived_at IS NULL
+            """,
+            (archived_at,),
+        )
+        archived = cursor.rowcount
+    return {
+        "archived": archived,
+        "message": (
+            f"Archived {archived} delivered order" + ("" if archived == 1 else "s") +
+            ". Customers still see them in their order history."
+        ),
     }
 
 

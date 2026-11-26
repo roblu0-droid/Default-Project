@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS orders (
     status TEXT NOT NULL DEFAULT 'Preparing',
     hub TEXT NOT NULL,
     notes TEXT NOT NULL DEFAULT '',
-    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    archived_at TEXT
 );
 
 CREATE TABLE IF NOT EXISTS order_items (
@@ -139,3 +140,11 @@ def init_db() -> None:
         columns = {row["name"] for row in conn.execute("PRAGMA table_info(users)").fetchall()}
         if "is_admin" not in columns:
             conn.execute("ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0")
+        # Archiving lets the admin clear Delivered orders from the live queue
+        # without deleting customer history or notifications.
+        order_columns = {row["name"] for row in conn.execute("PRAGMA table_info(orders)").fetchall()}
+        if "archived_at" not in order_columns:
+            conn.execute("ALTER TABLE orders ADD COLUMN archived_at TEXT")
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_orders_archive ON orders(archived_at, status)"
+        )

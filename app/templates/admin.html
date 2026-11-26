@@ -54,7 +54,10 @@
           <span class="section-kicker">Live queue</span>
           <h2>Customer orders</h2>
         </div>
-        <button class="admin-refresh" type="button" id="refreshOrdersButton">↻ Refresh</button>
+        <div class="admin-panel-actions">
+          <button class="admin-archive" type="button" id="archiveDeliveredButton">Archive delivered</button>
+          <button class="admin-refresh" type="button" id="refreshOrdersButton">↻ Refresh</button>
+        </div>
       </div>
       <div class="admin-filters" id="adminFilters" role="group" aria-label="Filter orders by status"></div>
       <div class="admin-table-wrap" id="adminTable">
@@ -62,7 +65,7 @@
       </div>
     </section>
 
-    <p class="admin-footnote">Tip: use <strong>Auto progress</strong> on an order to walk it through every status — the customer sees a Shopee-style notification at each step.</p>
+    <p class="admin-footnote">Tip: use <strong>Auto progress</strong> on an order to walk it through every status — the customer sees a Shopee-style notification at each step. At the end of the day, <strong>Archive delivered</strong> clears the queue while customers keep their order history.</p>
   </main>
 
   <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>

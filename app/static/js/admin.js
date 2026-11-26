@@ -280,6 +280,31 @@
     refreshButton.addEventListener("click", () => loadOrders());
   }
 
+  const archiveButton = $("#archiveDeliveredButton");
+  if (archiveButton) {
+    archiveButton.addEventListener("click", async () => {
+      const count = state.orders.filter((order) => order.status === "Delivered").length;
+      if (!count) {
+        toast("Nothing to archive", "There are no Delivered orders in the queue.", "info");
+        return;
+      }
+      const label = count + " delivered order" + (count === 1 ? "" : "s");
+      if (!window.confirm("Archive " + label + "? Customers will still see them in their order history.")) {
+        return;
+      }
+      archiveButton.disabled = true;
+      try {
+        const payload = await api("/api/admin/orders/archive-delivered", { method: "POST" });
+        toast("Queue cleared", payload.message, "success");
+        await loadOrders(true);
+      } catch (error) {
+        toast("Could not archive", error.message, "error");
+      } finally {
+        archiveButton.disabled = false;
+      }
+    });
+  }
+
   const logoutButton = $("#adminLogoutButton");
   if (logoutButton) {
     logoutButton.addEventListener("click", async () => {
