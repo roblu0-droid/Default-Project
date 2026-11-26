@@ -218,6 +218,47 @@
 
 .admin-archive:disabled { opacity: 0.5; cursor: wait; }
 
+.admin-view-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 24px 4px;
+}
+
+.admin-view-switch button {
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--cream);
+  color: var(--burgundy);
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.71rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-view-switch button.is-active {
+  background: var(--accent-gradient);
+  border-color: transparent;
+  color: #fff;
+}
+
+.admin-restore {
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
+  padding: 8px 12px;
+  background: var(--cream);
+  color: var(--burgundy);
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.admin-restore:hover { border-color: var(--ember); color: var(--ember); }
+.admin-restore:disabled { opacity: 0.5; cursor: wait; }
+
 .admin-filters {
   display: flex;
   flex-wrap: wrap;

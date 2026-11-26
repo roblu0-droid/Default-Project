@@ -18,6 +18,8 @@
   const state = {
     orders: [],
     filter: "All",
+    view: "active",
+    archivedCount: 0,
     busy: new Set(),
     timer: null,
   };
@@ -109,6 +111,19 @@
     set("#statRevenue", money(payload.total_revenue_php || 0));
   }
 
+  function renderViewSwitch() {
+    const wrap = $("#adminViewSwitch");
+    if (wrap) {
+      $$("[data-view]", wrap).forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.view === state.view);
+      });
+    }
+    const count = $("#archivedCount");
+    if (count) count.textContent = String(state.archivedCount);
+    const archiveButton = $("#archiveDeliveredButton");
+    if (archiveButton) archiveButton.hidden = state.view === "archived";
+  }
+
   function renderFilters() {
     const wrap = $("#adminFilters");
     if (!wrap) return;
@@ -127,22 +142,29 @@
 
   function renderTable() {
     if (!table) return;
+    const archivedView = state.view === "archived";
     const orders = state.filter === "All"
       ? state.orders
       : state.orders.filter((order) => order.status === state.filter);
 
     if (!orders.length) {
       table.innerHTML = '<div class="admin-empty"><strong>Nothing here yet</strong>' +
-        (state.filter === "All"
-          ? "Customer orders will appear as soon as someone checks out."
-          : "No orders currently at " + esc(state.filter) + ".") + "</div>";
+        (archivedView
+          ? "Archived orders will appear here after you clear delivered orders."
+          : state.filter === "All"
+            ? "Customer orders will appear as soon as someone checks out."
+            : "No orders currently at " + esc(state.filter) + ".") + "</div>";
       return;
     }
 
+    const headers = archivedView
+      ? "<th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th>" +
+        "<th>Archived</th><th>Action</th>"
+      : "<th>Order</th><th>Customer</th><th>Items</th><th>Deliver to</th>" +
+        "<th>Total</th><th>Status</th><th>Update</th>";
+
     table.innerHTML =
-      '<table class="admin-table"><thead><tr>' +
-      "<th>Order</th><th>Customer</th><th>Items</th><th>Deliver to</th>" +
-      "<th>Total</th><th>Status</th><th>Update</th>" +
+      '<table class="admin-table"><thead><tr>' + headers +
       "</tr></thead><tbody>" +
       orders.map((order) => {
         const items = order.items || [];
@@ -155,27 +177,36 @@
           '<option value="' + esc(status) + '"' +
           (status === order.status ? " selected" : "") + ">" + esc(status) + "</option>"
         ).join("");
-        return (
-          "<tr>" +
+        const refCell =
           '<td><span class="admin-ref">' + esc(order.reference) + "</span>" +
-          '<span class="admin-sub">' + esc(formatDateTime(order.created_at)) + "</span></td>" +
+          '<span class="admin-sub">' + esc(formatDateTime(order.created_at)) + "</span></td>";
+        const customerCell =
           '<td class="admin-customer"><strong>' + esc(order.customer_name) + "</strong>" +
-          '<span class="admin-sub">' + esc(order.customer_email || "—") + "</span></td>" +
+          '<span class="admin-sub">' + esc(order.customer_email || "—") + "</span></td>";
+        const itemsCell =
           '<td><div class="admin-items">' + esc(itemText || "—") + "</div>" +
-          '<span class="admin-sub">' + itemCount + " item" + (itemCount === 1 ? "" : "s") + "</span></td>" +
+          '<span class="admin-sub">' + itemCount + " item" + (itemCount === 1 ? "" : "s") + "</span></td>";
+        const addressCell =
           '<td><div class="admin-address">' + esc(order.barangay) + ", " + esc(order.municipality) +
-          '</div><span class="admin-sub">' + esc(order.payment_method) + "</span></td>" +
-          '<td class="admin-total">' + money(order.total_php) + "</td>" +
-          "<td>" + statusBadge(order.status) + "</td>" +
-          '<td><div class="admin-actions">' +
-          '<select class="admin-status-select" data-status-select="' + order.id + '"' +
-          (busy ? " disabled" : "") + ">" + options + "</select>" +
-          '<button class="admin-update" type="button" data-update="' + order.id + '"' +
-          (busy ? " disabled" : "") + ">Update</button>" +
-          '<button class="admin-auto" type="button" data-auto="' + order.id + '"' +
-          (busy || order.status === "Delivered" || order.status === "Cancelled" ? " disabled" : "") +
-          ">Auto progress</button>" +
-          "</div></td>" +
+          '</div><span class="admin-sub">' + esc(order.payment_method) + "</span></td>";
+        const totalCell = '<td class="admin-total">' + money(order.total_php) + "</td>";
+        const statusCell = "<td>" + statusBadge(order.status) + "</td>";
+        const finalCells = archivedView
+          ? '<td><span class="admin-sub">' + esc(formatDateTime(order.archived_at)) + "</span></td>" +
+            '<td><div class="admin-actions">' +
+            '<button class="admin-restore" type="button" data-restore="' + order.id + '"' +
+            (busy ? " disabled" : "") + ">Restore</button></div></td>"
+          : '<td><div class="admin-actions">' +
+            '<select class="admin-status-select" data-status-select="' + order.id + '"' +
+            (busy ? " disabled" : "") + ">" + options + "</select>" +
+            '<button class="admin-update" type="button" data-update="' + order.id + '"' +
+            (busy ? " disabled" : "") + ">Update</button>" +
+            '<button class="admin-auto" type="button" data-auto="' + order.id + '"' +
+            (busy || order.status === "Delivered" || order.status === "Cancelled" ? " disabled" : "") +
+            ">Auto progress</button></div></td>";
+        return (
+          "<tr>" + refCell + customerCell + itemsCell +
+          (archivedView ? "" : addressCell) + totalCell + statusCell + finalCells +
           "</tr>"
         );
       }).join("") +
@@ -184,8 +215,10 @@
 
   async function loadOrders(quiet = false) {
     try {
-      const payload = await api("/api/admin/orders");
+      const payload = await api("/api/admin/orders?view=" + state.view);
       state.orders = payload.orders || [];
+      state.archivedCount = Number(payload.archived_count) || 0;
+      renderViewSwitch();
       renderStats(payload);
       renderFilters();
       renderTable();
@@ -225,6 +258,21 @@
     }
   }
 
+  async function restoreOrder(orderId, button) {
+    if (button) button.disabled = true;
+    try {
+      const payload = await api("/api/admin/orders/" + orderId + "/restore", {
+        method: "POST",
+      });
+      toast("Order restored", payload.order.reference + " is back in the active queue.", "success");
+      await loadOrders(true);
+    } catch (error) {
+      toast("Could not restore", error.message, "error");
+    } finally {
+      if (button) button.disabled = false;
+    }
+  }
+
   function wait(ms) {
     return new Promise((resolve) => window.setTimeout(resolve, ms));
   }
@@ -252,6 +300,11 @@
   // ---------------------------------------------------------------- events
   if (table) {
     table.addEventListener("click", (event) => {
+      const restoreButton = event.target.closest("[data-restore]");
+      if (restoreButton) {
+        restoreOrder(Number(restoreButton.dataset.restore), restoreButton);
+        return;
+      }
       const updateButton = event.target.closest("[data-update]");
       if (updateButton) {
         const id = Number(updateButton.dataset.update);
@@ -272,6 +325,18 @@
       state.filter = button.dataset.filter;
       renderFilters();
       renderTable();
+    });
+  }
+
+  const viewSwitch = $("#adminViewSwitch");
+  if (viewSwitch) {
+    viewSwitch.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-view]");
+      if (!button || button.dataset.view === state.view) return;
+      state.view = button.dataset.view;
+      state.filter = "All";
+      renderViewSwitch();
+      loadOrders();
     });
   }
 

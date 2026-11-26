@@ -390,6 +390,7 @@ def _serialize_order(row, items) -> dict:
         "hub": row["hub"],
         "notes": row["notes"],
         "created_at": row["created_at"],
+        "archived_at": row["archived_at"] if "archived_at" in row.keys() else None,
         "items": [
             {
                 "menu_item_id": item["menu_item_id"],
@@ -615,14 +616,15 @@ async def confirm_delivered(order_id: int, user: dict = Depends(require_user)):
 # ---------------------------------------------------------------------------
 # Admin API — master view of every customer order
 # ---------------------------------------------------------------------------
-def _all_orders(limit: int = 100) -> list[dict]:
+def _all_orders(limit: int = 100, *, archived: bool = False) -> list[dict]:
+    where = "o.archived_at IS NOT NULL" if archived else "o.archived_at IS NULL"
     with get_connection() as conn:
         rows = conn.execute(
-            """
+            f"""
             SELECT o.*, u.email AS customer_email
               FROM orders o
               JOIN users u ON u.id = o.customer_id
-             WHERE o.archived_at IS NULL
+             WHERE {where}
              ORDER BY o.id DESC
              LIMIT ?
             """,
@@ -639,10 +641,21 @@ def _all_orders(limit: int = 100) -> list[dict]:
 
 
 @app.get("/api/admin/orders")
-async def admin_list_orders(admin: dict = Depends(require_admin)):
-    orders = _all_orders()
+async def admin_list_orders(
+    view: str = Query("active"), admin: dict = Depends(require_admin)
+):
+    if view not in {"active", "archived"}:
+        raise HTTPException(status_code=422, detail="Unknown admin order view.")
+    archived = view == "archived"
+    orders = _all_orders(archived=archived)
+    with get_connection() as conn:
+        archived_count = conn.execute(
+            "SELECT COUNT(*) AS c FROM orders WHERE archived_at IS NOT NULL"
+        ).fetchone()["c"]
     return {
         "orders": orders,
+        "view": view,
+        "archived_count": archived_count,
         "statuses": ORDER_STATUSES,
         "counts": {
             status: sum(1 for order in orders if order["status"] == status)
@@ -673,6 +686,37 @@ async def admin_archive_delivered(admin: dict = Depends(require_admin)):
             ". Customers still see them in their order history."
         ),
     }
+
+
+@app.post("/api/admin/orders/{order_id}/restore")
+async def admin_restore_order(
+    order_id: int, admin: dict = Depends(require_admin)
+):
+    """Return an archived order to the live admin queue."""
+    with get_connection() as conn:
+        cursor = conn.execute(
+            """
+            UPDATE orders
+               SET archived_at = NULL
+             WHERE id = ? AND archived_at IS NOT NULL
+            """,
+            (order_id,),
+        )
+        if cursor.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Archived order not found.")
+        row = conn.execute(
+            """
+            SELECT o.*, u.email AS customer_email
+              FROM orders o
+              JOIN users u ON u.id = o.customer_id
+             WHERE o.id = ?
+            """,
+            (order_id,),
+        ).fetchone()
+        items = conn.execute(
+            "SELECT * FROM order_items WHERE order_id = ? ORDER BY id", (order_id,)
+        ).fetchall()
+    return {"order": _serialize_order(row, items)}
 
 
 @app.patch("/api/admin/orders/{order_id}/status")
