@@ -1844,3 +1844,14 @@
   .dish-modal-copy { padding: 22px 18px 20px; }
   .app-footer { padding: 20px 12px 26px; }
 }
+
+/* ==========================================================================
+   Hide the system-integration demo from the customer-facing app.
+   Remove this block to bring the live trace and pattern cards back.
+   ========================================================================== */
+.integration-section,
+.app-nav-link[href="#integration"],
+.mobile-nav a[href="#integration"],
+#heroTraceButton {
+  display: none !important;
+}
